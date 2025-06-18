@@ -7,8 +7,8 @@ import FillInTheBlank from 'features/FillInTheBlank';
 
 export default function App() {
   return (
-    <View className="w-full">
-      <MultipleChoiceSingleAnswer></MultipleChoiceSingleAnswer>
-    </View>
+    <>
+      <FillInTheBlank />
+    </>
   );
 }
