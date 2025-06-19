@@ -1,19 +1,24 @@
 import { View, Text, TouchableOpacity, VirtualizedList } from 'react-native';
 import { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react-native';
+import { MultipleChoiceQuestion } from '../types/Question';
 
-export default function MultipleChoiceSingleAnswer() {
-  const question = {
-    title: '',
-    question: '__ main (String[] args) \n { ... }',
-    options: ['void', 'int', 'boolean', 'double'],
-    answer: 'void',
-    fullAnswer: 'void main (String[] args) \n { ... }',
-  };
+export default function MultipleChoiceSingleAnswer({
+  question,
+  onNext,
+  addMistake,
+}: {
+  question: MultipleChoiceQuestion;
+  onNext: any;
+  addMistake: any;
+}) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const onSelect = (option: string) => {
     setSelectedOption(option);
+    if (option !== question.content.correctAnswer) {
+      addMistake(question);
+    }
     setShowAnswer(true);
   };
   return (
@@ -25,16 +30,16 @@ export default function MultipleChoiceSingleAnswer() {
 
         <View className="mb-8 flex-row justify-center">
           <Text className="font-mono text-base text-black">
-            {showAnswer ? question.fullAnswer : question.question}
+            {showAnswer ? question.fullAnswer : question.content.questionText}
           </Text>
         </View>
 
-        {question.options.map((option, index) => {
+        {question.content.options.map((option, index) => {
           let optionBg = 'bg-gray-100';
           if (showAnswer) {
-            if (option === selectedOption && option === question.answer) {
+            if (option === selectedOption && option === question.content.correctAnswer) {
               optionBg = 'bg-green-300';
-            } else if (option === selectedOption && option !== question.answer) {
+            } else if (option === selectedOption && option !== question.content.correctAnswer) {
               optionBg = 'bg-red-300';
             }
           }
@@ -57,7 +62,7 @@ export default function MultipleChoiceSingleAnswer() {
           onPress={() => {}}
           activeOpacity={0.8}
           style={{ opacity: showAnswer ? 1 : 0, pointerEvents: showAnswer ? 'auto' : 'none' }}>
-          <ArrowRight size={48} color="black" />
+          <ArrowRight size={48} color="black" onPress={() => onNext()} />
         </TouchableOpacity>
       </View>
     </View>

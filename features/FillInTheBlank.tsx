@@ -1,49 +1,24 @@
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import React, { useState } from 'react';
 import { ArrowRight, Check } from 'lucide-react-native';
+import { FillInTheBlankQuestion, Question } from '../types/Question';
 
-export default function FillInTheBlank() {
-  const question = {
-    title: 'Define the main function',
-    question: [
-      { type: 'blank', answer: 'void' },
-      {
-        type: 'blank',
-        answer: 'main',
-      },
-      {
-        type: 'word',
-        word: '(String[]',
-      },
-      {
-        type: 'word',
-        word: 'args)',
-      },
-      {
-        type: 'word',
-        word: '{...}',
-      },
-    ],
-  };
+export default function FillInTheBlank(prop: { question: FillInTheBlankQuestion; onNext: any; addMistake:any }) {
+  const question = prop.question;
+  const blankCount = question.content.filter((i) => i.type === 'blank').length;
 
-  // 计算填空数量
-  const blankCount = question.question.filter((i) => i.type === 'blank').length;
-
-  // 输入状态
   const [inputs, setInputs] = useState<string[]>(Array(blankCount).fill(''));
 
-  // 错误状态
   const [errors, setErrors] = useState<boolean[]>(Array(blankCount).fill(false));
 
-  // 是否显示答案
   const [showAnswer, setShowAnswer] = useState(false);
 
-  // 提交函数，校验答案
   const onSubmit = () => {
     const newErrors = inputs.map((input, idx) => {
-      return input.trim() !== question.question.filter((i) => i.type === 'blank')[idx].answer;
+      return input.trim() !== question.content.filter((i) => i.type === 'blank')[idx].answer;
     });
     setErrors(newErrors);
+    if(newErrors.length>0) prop.addMistake(question)
     setShowAnswer(true);
   };
 
@@ -63,7 +38,7 @@ export default function FillInTheBlank() {
         <View className="max-w-full flex-row flex-wrap items-center justify-center">
           {(() => {
             let currentBlank = 0;
-            return question.question.map((item, index) => {
+            return question.content.map((item, index) => {
               if (item.type === 'word') {
                 return (
                   <Text key={index} className="mx-1 shrink font-mono text-base text-black">
@@ -105,7 +80,11 @@ export default function FillInTheBlank() {
             if (!showAnswer) onSubmit();
           }}
           activeOpacity={0.8}>
-          {showAnswer ? <ArrowRight size={48} color="black" /> : <Check size={48} color="green" />}
+          {showAnswer ? (
+            <ArrowRight size={48} color="black" onPress={() => prop.onNext()} />
+          ) : (
+            <Check size={48} color="green" onPress={() => onSubmit()} />
+          )}
         </TouchableOpacity>
       </View>
     </View>

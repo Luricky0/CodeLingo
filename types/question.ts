@@ -1,22 +1,36 @@
-type QuestionType = 'multiple-choice' | 'fill-in-the-blank' | 'true-false' | 'coding';
-
-
-interface BaseQuestion {
+type BaseQuestion = {
   id: string;
-  type: QuestionType;
-  title?: string;
-  question: string;
-  answer: string | string[];
-  fullAnswer: string;
-}
+  title: string;
+  prompt?: string;
+  explanation?: string;
+};
 
-interface MultipleChoiceQuestion extends BaseQuestion {
-  type: 'multiple-choice';
-  options: string[];
-}
+type WordSegment = {
+  type: 'word';
+  word: string;
+};
 
-interface FillInTheBlankQuestion extends BaseQuestion {
+type BlankSegment = {
+  type: 'blank';
+  answer: string;
+  accepts?: string[];
+};
+
+type Segment = WordSegment | BlankSegment;
+
+export type FillInTheBlankQuestion = BaseQuestion & {
   type: 'fill-in-the-blank';
-}
+  content: Segment[];
+};
 
-type Question = MultipleChoiceQuestion | FillInTheBlankQuestion; 
+export type MultipleChoiceQuestion = BaseQuestion & {
+  type: 'multiple-choice';
+  content: {
+    questionText: string;
+    options: string[];
+    correctAnswer: string;
+  };
+  fullAnswer: string;
+};
+
+export type Question = FillInTheBlankQuestion | MultipleChoiceQuestion;

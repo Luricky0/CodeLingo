@@ -3,11 +3,17 @@
   "compilerOptions": {
     "strict": true,
     "jsx": "react-jsx",
-
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"],
-       "features/*": ["features/*"]
+      "~/*": [
+        "src/*"
+      ],
+      "features/*": [
+        "features/*"
+      ],
+      "features/*": [
+        "types/*"
+      ],
     }
   }
 }
