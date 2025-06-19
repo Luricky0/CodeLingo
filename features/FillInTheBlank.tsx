@@ -3,7 +3,11 @@ import React, { useState } from 'react';
 import { ArrowRight, Check } from 'lucide-react-native';
 import { FillInTheBlankQuestion, Question } from '../types/Question';
 
-export default function FillInTheBlank(prop: { question: FillInTheBlankQuestion; onNext: any; addMistake:any }) {
+export default function FillInTheBlank(prop: {
+  question: FillInTheBlankQuestion;
+  onNext: any;
+  addMistake: any;
+}) {
   const question = prop.question;
   const blankCount = question.content.filter((i) => i.type === 'blank').length;
 
@@ -14,11 +18,17 @@ export default function FillInTheBlank(prop: { question: FillInTheBlankQuestion;
   const [showAnswer, setShowAnswer] = useState(false);
 
   const onSubmit = () => {
+    let shouldAddMistake = false;
     const newErrors = inputs.map((input, idx) => {
-      return input.trim() !== question.content.filter((i) => i.type === 'blank')[idx].answer;
+      const res = input.trim() !== question.content.filter((i) => i.type === 'blank')[idx].answer;
+      if (!shouldAddMistake && res) shouldAddMistake = true;
+      return res;
     });
     setErrors(newErrors);
-    if(newErrors.length>0) prop.addMistake(question)
+    if (shouldAddMistake) {
+      console.log('mistake!');
+      prop.addMistake(question);
+    }
     setShowAnswer(true);
   };
 
