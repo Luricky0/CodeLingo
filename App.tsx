@@ -76,10 +76,11 @@ export default function App() {
         id: 'q6',
         type: 'fill-in-the-blank',
         title: 'If statement syntax',
+        prompt: 'Execute when x is greater than ten',
         content: [
           { type: 'word', word: 'if' },
           { type: 'word', word: '(' },
-          { type: 'blank', answer: 'x > 0' },
+          { type: 'blank', answer: 'x > 10',accepts:['x>10,x >10, x> 10'] },
           { type: 'word', word: ')' },
           { type: 'word', word: '{ ... }' },
         ],

@@ -45,6 +45,14 @@ export default function FillInTheBlank(prop: {
           <Text className=" font-mono">{question.title}</Text>
         </View>
 
+        {question.prompt ? (
+          <View className="mb-4 items-center justify-center bg-yellow-300">
+            <Text className=" font-mono"></Text>
+          </View>
+        ) : (
+          <></>
+        )}
+
         <View className="max-w-full flex-row flex-wrap items-center justify-center">
           {(() => {
             let currentBlank = 0;

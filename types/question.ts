@@ -33,4 +33,12 @@ export type MultipleChoiceQuestion = BaseQuestion & {
   fullAnswer: string;
 };
 
-export type Question = FillInTheBlankQuestion | MultipleChoiceQuestion;
+export type Tips = BaseQuestion & {
+  type: 'tips';
+  content: {
+    example: string;
+    explanation: string;
+  };
+};
+
+export type Question = FillInTheBlankQuestion | MultipleChoiceQuestion | Tips;
