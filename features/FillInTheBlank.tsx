@@ -39,12 +39,11 @@ export default function FillInTheBlank(prop: {
   };
 
   return (
-    <View className="flex-1 justify-between p-6 ">
+    <View className="flex-1 justify-between p-6 font-mono">
+      <View className="items-center justify-center rounded bg-yellow-300 p-1">
+        {question.title}
+      </View>
       <View className="flex-1 justify-center">
-        <View className="mb-4 items-center justify-center bg-yellow-300">
-          <Text className=" font-mono">{question.title}</Text>
-        </View>
-
         {question.prompt ? (
           <View className="mb-4 items-center justify-center bg-yellow-300">
             <Text className=" font-mono"></Text>

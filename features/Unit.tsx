@@ -4,6 +4,7 @@ import { UnitType } from '../types/Unit';
 import { FillInTheBlankQuestion, MultipleChoiceQuestion, Question } from '../types/Question';
 import MultipleChoiceSingleAnswer from './MultipleChoiceSingleAnswer';
 import FillInTheBlank from './FillInTheBlank';
+import TipsView from './Tips';
 
 export default function Unit({ unit }: { unit: UnitType }) {
   const [curQuestionIndex, setCurQuestionIndex] = useState(0);
@@ -36,6 +37,8 @@ export default function Unit({ unit }: { unit: UnitType }) {
           addMistake={addMistake}
         />
       );
+    } else if (q.type === 'tips') {
+      return <TipsView tips={q} onNext={nextQuestion} />;
     }
   };
 

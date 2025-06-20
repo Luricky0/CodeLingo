@@ -11,6 +11,34 @@ export default function App() {
     nextUnitId: 'unit-java-basics-2',
     questions: [
       {
+        id: 't0',
+        type: 'tips',
+        title: 'Use int to declare a space that store an integer',
+        content: {
+          example: [
+            [
+              { type: 'point', word: 'int' },
+              { type: 'word', word: 'x;' },
+            ],
+            [
+              { type: 'word', word: 'int' },
+              { type: 'point', word: 'x = 0' },
+              { type: 'word', word: ';' },
+            ],
+
+            [
+              { type: 'word', word: 'int x = 0 ' },
+              { type: 'point', word: ';' },
+            ],
+          ],
+          explanation: [
+            'declare an integer named x',
+            'x is set by 0 initially',
+            'add ; to every end of a sentence',
+          ],
+        },
+      },
+      {
         id: 'q1',
         type: 'fill-in-the-blank',
         title: 'Define the main function',
@@ -80,7 +108,7 @@ export default function App() {
         content: [
           { type: 'word', word: 'if' },
           { type: 'word', word: '(' },
-          { type: 'blank', answer: 'x > 10',accepts:['x>10,x >10, x> 10'] },
+          { type: 'blank', answer: 'x > 10', accepts: ['x>10,x >10, x> 10'] },
           { type: 'word', word: ')' },
           { type: 'word', word: '{ ... }' },
         ],

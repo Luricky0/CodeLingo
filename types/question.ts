@@ -32,12 +32,15 @@ export type MultipleChoiceQuestion = BaseQuestion & {
   };
   fullAnswer: string;
 };
-
+type TipSegment={
+  type:'point'|'word';
+  word: string;
+}
 export type Tips = BaseQuestion & {
   type: 'tips';
   content: {
-    example: string;
-    explanation: string;
+    example: TipSegment[][];
+    explanation: string[];
   };
 };
 
