@@ -1,7 +1,9 @@
 import { UnitType } from '../types/Unit';
 import { ChapterType } from '../types/Chapter';
 
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
+import Unit from './Unit';
 
 export default function Chapter() {
   const javaBasicsUnit: UnitType = {
@@ -164,15 +166,26 @@ export default function Chapter() {
     title: 'Learn the data type',
     units: [javaBasicsUnit],
   };
+  const [chapterIndex, setChapterIndex] = useState(-1);
+
   return (
-    <View>
-      <View>
-        {chapter.units.map((item, index) => (
-          <View key={index} className="rounded bg-orange-300">
-            {'>'}
+    <View className="flex-1 items-center justify-center">
+      {chapterIndex == -1 ? (
+        chapter.units.map((item, index) => (
+          <View
+            key={index}
+            className="flex h-24 w-24 items-center justify-center rounded-full bg-orange-400 p-1">
+            <Text
+              key={index}
+              className="text-bold font-mono text-4xl color-white"
+              onPress={() => setChapterIndex(index)}>
+              {index + 1}
+            </Text>
           </View>
-        ))}
-      </View>
+        ))
+      ) : (
+        <Unit unit={chapter.units[chapterIndex]} />
+      )}
     </View>
   );
 }
