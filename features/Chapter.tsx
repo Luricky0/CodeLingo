@@ -167,25 +167,27 @@ export default function Chapter() {
     units: [javaBasicsUnit],
   };
   const [chapterIndex, setChapterIndex] = useState(-1);
-
+  const getUnitButton = () => {
+    return chapter.units.map((item, index) => (
+      <View
+        key={index}
+        className="flex h-24 w-24 items-center justify-center rounded-full bg-orange-400 p-1">
+        <Text
+          key={index}
+          className="text-bold font-mono text-4xl color-white"
+          onPress={() => setChapterIndex(index)}>
+          {index + 1}
+        </Text>
+      </View>
+    ));
+  };
   return (
-    <View className="flex-1 items-center justify-center">
-      {chapterIndex == -1 ? (
-        chapter.units.map((item, index) => (
-          <View
-            key={index}
-            className="flex h-24 w-24 items-center justify-center rounded-full bg-orange-400 p-1">
-            <Text
-              key={index}
-              className="text-bold font-mono text-4xl color-white"
-              onPress={() => setChapterIndex(index)}>
-              {index + 1}
-            </Text>
-          </View>
-        ))
+    <>
+      {chapterIndex === -1 ? (
+        <View className="flex-1 items-center justify-center">{getUnitButton()}</View>
       ) : (
         <Unit unit={chapter.units[chapterIndex]} />
       )}
-    </View>
+    </>
   );
 }

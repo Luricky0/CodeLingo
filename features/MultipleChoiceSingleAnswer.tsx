@@ -33,28 +33,29 @@ export default function MultipleChoiceSingleAnswer({
             {showAnswer ? question.fullAnswer : question.content.questionText}
           </Text>
         </View>
-
-        {question.content.options.map((option, index) => {
-          let optionBg = 'bg-gray-100';
-          if (showAnswer) {
-            if (option === selectedOption && option === question.content.correctAnswer) {
-              optionBg = 'bg-green-300';
-            } else if (option === selectedOption && option !== question.content.correctAnswer) {
-              optionBg = 'bg-red-300';
+        <View>
+          {question.content.options.map((option, index) => {
+            let optionBg = 'bg-gray-100';
+            if (showAnswer) {
+              if (option === selectedOption && option === question.content.correctAnswer) {
+                optionBg = 'bg-green-300';
+              } else if (option === selectedOption && option !== question.content.correctAnswer) {
+                optionBg = 'bg-red-300';
+              }
             }
-          }
-          return (
-            <TouchableOpacity
-              key={index}
-              className={`mb-4 rounded-md p-4 ${optionBg}`}
-              onPress={() => {
-                if (!showAnswer) onSelect(option);
-              }}
-              activeOpacity={0.7}>
-              <Text className=" font-mono text-base  text-black">{option}</Text>
-            </TouchableOpacity>
-          );
-        })}
+            return (
+              <TouchableOpacity
+                key={index}
+                className={`mb-4 rounded-md p-4 ${optionBg}`}
+                onPress={() => {
+                  if (!showAnswer) onSelect(option);
+                }}
+                activeOpacity={0.7}>
+                <Text className=" font-mono text-base  text-black">{option}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </View>
       <View className="items-end">
         <TouchableOpacity
