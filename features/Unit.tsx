@@ -5,6 +5,7 @@ import { FillInTheBlankQuestion, MultipleChoiceQuestion, Question } from '../typ
 import MultipleChoiceSingleAnswer from './MultipleChoiceSingleAnswer';
 import FillInTheBlank from './FillInTheBlank';
 import TipsView from './Tips';
+import WordSorting from './WordSorting';
 
 export default function Unit({ unit }: { unit: UnitType }) {
   const [curQuestionIndex, setCurQuestionIndex] = useState(0);
@@ -37,6 +38,8 @@ export default function Unit({ unit }: { unit: UnitType }) {
           addMistake={addMistake}
         />
       );
+    } else if (q.type === 'word-sorting') {
+      return <WordSorting question={q} />;
     } else if (q.type === 'tips') {
       return <TipsView tips={q} onNext={nextQuestion} />;
     }

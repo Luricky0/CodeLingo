@@ -32,6 +32,16 @@ export type MultipleChoiceQuestion = BaseQuestion & {
   };
   fullAnswer: string;
 };
+
+export type WordSortingQuestion = BaseQuestion &{
+  type: 'word-sorting';
+  content:{
+    options: string[];
+    answer: string[];
+  }
+  tips?: string;
+}
+
 type TipSegment={
   type:'point'|'word';
   word: string;
@@ -44,4 +54,4 @@ export type Tips = BaseQuestion & {
   };
 };
 
-export type Question = FillInTheBlankQuestion | MultipleChoiceQuestion | Tips;
+export type Question = FillInTheBlankQuestion | MultipleChoiceQuestion | Tips | WordSortingQuestion;
