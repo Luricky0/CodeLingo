@@ -39,7 +39,7 @@ export default function Unit({ unit }: { unit: UnitType }) {
         />
       );
     } else if (q.type === 'word-sorting') {
-      return <WordSorting question={q} />;
+      return <WordSorting question={q} onNext={nextQuestion} addMistake={addMistake} />;
     } else if (q.type === 'tips') {
       return <TipsView tips={q} onNext={nextQuestion} />;
     }

@@ -13,13 +13,14 @@ export default function Chapter() {
     nextUnitId: 'unit-java-basics-2',
     questions: [
       {
-         id: 'ws1',
-         type:'word-sorting',
-         title:'Use int to declare a space that store an integer',
-         content:{
-          options:["int","double","x",";","=","0"],
-          answer:["int","x","=","0",";"]
-         }
+        id: 'ws1',
+        type: 'word-sorting',
+        title: 'Use int to declare a space that store an integer',
+        content: {
+          options: ['int', 'double', 'x', ';', '=', '0'],
+          answer: ['int', 'x', '=', '0', ';'],
+        },
+        tips: 'Declare an integer named x with an intial value of 0',
       },
       {
         id: 't0',

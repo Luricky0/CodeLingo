@@ -23,16 +23,14 @@ export default function MultipleChoiceSingleAnswer({
   };
   return (
     <View className="flex-1 justify-between bg-white p-6">
+      <View className="items-center justify-center rounded bg-yellow-300 p-1">
+        {question.title}
+      </View>
       <View className="flex-1 justify-center">
-        <View className="mb-4">
-          <Text>{question.title}</Text>
+        <View className="mb-8 flex-row justify-center">
+          <Text className="font-mono text-base text-black">{question.content.questionText}</Text>
         </View>
 
-        <View className="mb-8 flex-row justify-center">
-          <Text className="font-mono text-base text-black">
-            {showAnswer ? question.fullAnswer : question.content.questionText}
-          </Text>
-        </View>
         <View>
           {question.content.options.map((option, index) => {
             let optionBg = 'bg-gray-100';
