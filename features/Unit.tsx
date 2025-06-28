@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { UnitType } from '../types/Unit';
 import { FillInTheBlankQuestion, MultipleChoiceQuestion, Question } from '../types/Question';
@@ -7,11 +7,14 @@ import FillInTheBlank from './FillInTheBlank';
 import TipsView from './Tips';
 import WordSorting from './WordSorting';
 
-export default function Unit({ unit }: { unit: UnitType }) {
+export default function Unit({ unit, back }: { unit: UnitType; back: any }) {
   const [curQuestionIndex, setCurQuestionIndex] = useState(0);
   const [mistakes, setMistakes] = useState<Question[]>([]);
+  const unitSize = unit.questions.length;
   const nextQuestion = () => {
+    if (curQuestionIndex >= unitSize + mistakes.length - 1) back();
     setCurQuestionIndex(curQuestionIndex + 1);
+    console.log(curQuestionIndex, unitSize + mistakes.length - 1);
   };
   const addMistake = (question: Question) => {
     const newMistakes = [...mistakes, question];
@@ -19,7 +22,6 @@ export default function Unit({ unit }: { unit: UnitType }) {
   };
 
   const getQuestionView = () => {
-    const unitSize = unit.questions.length;
     const q =
       curQuestionIndex >= unitSize
         ? mistakes[curQuestionIndex - unitSize]
