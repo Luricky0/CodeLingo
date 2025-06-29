@@ -71,14 +71,15 @@ export default function FillInTheBlank(prop: {
                   <TextInput
                     key={index}
                     underlineColorAndroid="transparent"
-                    className={`mx-1 shrink justify-center rounded border-b p-1 text-base items-center${
+                    textAlignVertical="center"
+                    className={`mx-1 shrink justify-center rounded border-b p-1 items-center${
                       showAnswer
                         ? isError
                           ? 'border-red-600 bg-red-300 text-black'
                           : 'border-black bg-green-200 text-black'
                         : 'border-black bg-gray-200 text-black'
                     }`}
-                    style={{ width: correctAnswer!.length * 8 + 16 }}
+                    style={{ width: correctAnswer!.length * 8 + 16, textAlignVertical: 'center' }}
                     editable={!showAnswer}
                     value={showAnswer && isError ? correctAnswer : inputVal}
                     onChangeText={(text) => onChangeInput(text, inputIndex)}
