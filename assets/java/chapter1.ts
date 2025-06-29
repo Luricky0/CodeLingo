@@ -1,4 +1,3 @@
-import FillInTheBlank from 'features/FillInTheBlank';
 import { ChapterType } from '../../types/Chapter';
 import { UnitType } from '../../types/Unit';
 
@@ -77,6 +76,7 @@ const unit1: UnitType = {
       id: 'ws1',
       type: 'fill-in-the-blank',
       title: 'Use int to declare a space that store an integer',
+      prompt: 'Declare an integer named x with an intial value of 0 ',
       content: [
         { type: 'blank', answer: 'int' },
         { type: 'word', word: 'x' },
@@ -101,16 +101,17 @@ const unit1: UnitType = {
       id: 'ws1',
       type: 'word-sorting',
       title: 'Use int to declare a space that store an integer',
+      prompt: 'Declare an integer named x with an intial value of 0 ',
       content: {
         options: ['int', 'Int', '==', ':', 'integer', 'x', ';', '=', '0'],
         answer: ['int', 'x', '=', '0', ';'],
       },
-      tips: 'Declare an integer named x with an intial value of 0',
     },
     {
       id: 'ws1',
       type: 'fill-in-the-blank',
       title: 'Use int to declare a space that store an integer',
+      prompt: 'Declare an integer named x with an intial value of 0 ',
       content: [
         { type: 'blank', answer: 'int' },
         { type: 'word', word: 'x' },
@@ -123,6 +124,7 @@ const unit1: UnitType = {
       id: 'ws1',
       type: 'fill-in-the-blank',
       title: 'Use int to declare a space that store an integer',
+      prompt: 'Declare an integer named x with an intial value of 0 ',
       content: [
         { type: 'blank', answer: 'int' },
         { type: 'word', word: 'x' },
@@ -135,6 +137,7 @@ const unit1: UnitType = {
       id: 'ws1',
       type: 'fill-in-the-blank',
       title: 'Use int to declare a space that store an integer',
+      prompt: 'Declare an integer named x with an intial value of 0 ',
       content: [
         { type: 'blank', answer: 'int' },
         { type: 'blank', answer: 'x' },

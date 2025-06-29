@@ -1,11 +1,12 @@
 import { TouchableOpacity, View, Text } from 'react-native';
 import { Tips } from '../types/Question';
 import { ArrowRight } from 'lucide-react-native';
+import Title from '../components/Title';
 
 export default function TipsView({ tips, onNext }: { tips: Tips; onNext: any }) {
   return (
-    <View className="flex-1 justify-between bg-white p-6 font-mono">
-      <View className="rounded bg-yellow-300 p-1">{tips.title}</View>
+    <View className="flex-1 justify-between bg-white p-6">
+      <Title>{tips.title}</Title>
       <View className="flex">
         {tips.content.example.map((item, i) => (
           <View key={i} className="my-2">

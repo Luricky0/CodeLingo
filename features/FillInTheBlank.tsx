@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import React, { useState } from 'react';
 import { ArrowRight, Check } from 'lucide-react-native';
 import { FillInTheBlankQuestion, Question } from '../types/Question';
+import Title from 'components/Title';
 
 export default function FillInTheBlank(prop: {
   question: FillInTheBlankQuestion;
@@ -40,19 +41,17 @@ export default function FillInTheBlank(prop: {
 
   return (
     <View className="flex-1 justify-between p-6 font-mono">
-      <View className="items-center justify-center rounded bg-yellow-300 p-1">
-        {question.title}
-      </View>
+      <Title>{question.title}</Title>
+
       <View className="flex-1 justify-center">
         {question.prompt ? (
-          <View className="mb-4 items-center justify-center bg-yellow-300">
-            <Text className=" font-mono"></Text>
+          <View className="mb-6 items-center justify-center">
+            <Text className="text-l font-mono">{question.prompt}</Text>
           </View>
         ) : (
           <></>
         )}
-
-        <View className="max-w-full flex-row flex-wrap items-center justify-center">
+        <View className="h-60 max-w-full flex-row flex-wrap items-center justify-center">
           {(() => {
             let currentBlank = 0;
             return question.content.map((item, index) => {
@@ -72,7 +71,7 @@ export default function FillInTheBlank(prop: {
                   <TextInput
                     key={index}
                     underlineColorAndroid="transparent"
-                    className={`mx-1 shrink rounded border-b p-1 text-base ${
+                    className={`mx-1 shrink justify-center rounded border-b p-1 text-base items-center${
                       showAnswer
                         ? isError
                           ? 'border-red-600 bg-red-300 text-black'

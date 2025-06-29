@@ -48,11 +48,11 @@ export default function Unit({ unit, back }: { unit: UnitType; back: any }) {
   };
 
   return (
-    <View className="flex-1 p-1">
-      <View className="mb-4 w-full items-center">
-        <View className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
+    <View className="w-full flex-1 p-1 pt-16">
+      <View className="items-center">
+        <View className="m-4 h-4 w-full overflow-hidden rounded-full bg-gray-200">
           <View
-            className="h-full bg-blue-500"
+            className="h-full bg-green-500"
             style={{
               width: `${((curQuestionIndex + 1) / (unit.questions.length + mistakes.length)) * 100}%`,
             }}

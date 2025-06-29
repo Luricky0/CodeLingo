@@ -1,3 +1,4 @@
+import Title from 'components/Title';
 import { WordSortingQuestion } from 'features/Question';
 import { ArrowRight, Check } from 'lucide-react-native';
 import { use, useState } from 'react';
@@ -33,10 +34,12 @@ export default function WordSorting({
     if (showAnswer) {
       return curAnswer.map((item, index) => {
         const bgColor = errors[index] ? 'bg-red-300' : 'bg-green-300';
-        const thisClassName = `m-1 rounded ${bgColor} p-1`;
+        const thisClassName = `m-1 rounded ${bgColor} p-1 px-2`;
         return (
           <View key={index} className={thisClassName}>
-            <Text key={index}>{item}</Text>
+            <Text key={index} className="text-l">
+              {item}
+            </Text>
           </View>
         );
       });
@@ -44,12 +47,14 @@ export default function WordSorting({
       return curAnswer.map((item, index) => (
         <Pressable
           key={index}
-          className="m-1 rounded bg-gray-300 p-1"
+          className="m-1 rounded bg-gray-300 p-1 px-2"
           onPress={() => {
             const newCurAnswer = curAnswer.filter((item, idx) => idx !== index);
             setCurAnswer(newCurAnswer);
           }}>
-          <Text key={index}>{item}</Text>
+          <Text key={index} className="text-l">
+            {item}
+          </Text>
         </Pressable>
       ));
     }
@@ -57,12 +62,10 @@ export default function WordSorting({
 
   return (
     <View className="flex-1 items-center justify-center">
-      <View className="items-center justify-center rounded bg-yellow-300 p-1">
-        {question.title}
-      </View>
+      <Title>{question.title}</Title>
 
       <View className="mx-2 w-full flex-1 items-center justify-center">
-        <View className="flex-1 items-center justify-center">{question.tips}</View>
+        <View className="flex-1 items-center justify-center">{question.prompt}</View>
         <View className="flex-1">
           <View className="h-8 flex-row flex-wrap">{getAnswerView()}</View>
           <View className="m-1 h-px w-full bg-gray-300" />
@@ -75,8 +78,8 @@ export default function WordSorting({
             <View className="flex-row flex-wrap">
               {question.content.answer.map((item, index) => {
                 return (
-                  <View key={index} className="m-1 rounded bg-white p-1">
-                    <Text>{item}</Text>
+                  <View key={index} className="m-1 rounded bg-white p-1 px-2">
+                    <Text className="text-l">{item}</Text>
                   </View>
                 );
               })}
@@ -90,11 +93,13 @@ export default function WordSorting({
           {question.content.options.map((item, index) => (
             <Pressable
               key={index}
-              className="m-1 rounded bg-gray-300 p-1"
+              className="m-2 rounded bg-gray-300 p-1 px-2"
               onPress={() => {
                 setCurAnswer([...curAnswer, item]);
               }}>
-              <Text key={index}>{item}</Text>
+              <Text key={index} className="text-l">
+                {item}
+              </Text>
             </Pressable>
           ))}
         </View>

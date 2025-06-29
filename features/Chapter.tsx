@@ -26,13 +26,13 @@ export default function Chapter() {
     <>
       {chapterIndex === -1 ? (
         <View className="flex-1">
-          <View className="h-40 w-full items-center justify-center font-mono text-2xl">
-            {chapter.title}
+          <View className="h-40 w-full items-center justify-center">
+            <Text className=" font-mono text-2xl">{chapter.title}</Text>
           </View>
           <View className="my-2 flex-1 items-center">{getUnitButton()}</View>
         </View>
       ) : (
-        <Unit unit={chapter.units[chapterIndex]} back={backToUnitChoosing}/>
+        <Unit unit={chapter.units[chapterIndex]} back={backToUnitChoosing} />
       )}
     </>
   );

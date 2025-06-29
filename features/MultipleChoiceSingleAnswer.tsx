@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, VirtualizedList } from 'react-native';
 import { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react-native';
 import { MultipleChoiceQuestion } from '../types/Question';
+import Title from 'components/Title';
 
 export default function MultipleChoiceSingleAnswer({
   question,
@@ -23,9 +24,7 @@ export default function MultipleChoiceSingleAnswer({
   };
   return (
     <View className="flex-1 justify-between bg-white p-6">
-      <View className="items-center justify-center rounded bg-yellow-300 p-1">
-        {question.title}
-      </View>
+      <Title>{question.title}</Title>
       <View className="flex-1 justify-center">
         <View className="mb-8 flex-row justify-center">
           <Text className="font-mono text-base text-black">{question.content.questionText}</Text>
