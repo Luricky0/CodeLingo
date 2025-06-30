@@ -6,13 +6,18 @@ import MultipleChoiceSingleAnswer from './MultipleChoiceSingleAnswer';
 import FillInTheBlank from './FillInTheBlank';
 import TipsView from './Tips';
 import WordSorting from './WordSorting';
+import { useRoute } from '@react-navigation/native';
 
-export default function Unit({ unit, back }: { unit: UnitType; back: any }) {
+export default function Unit() {
+  const route = useRoute();
+  const { unit } = route.params as { unit: UnitType };
+
   const [curQuestionIndex, setCurQuestionIndex] = useState(0);
   const [mistakes, setMistakes] = useState<Question[]>([]);
   const unitSize = unit.questions.length;
   const nextQuestion = () => {
-    if (curQuestionIndex >= unitSize + mistakes.length - 1) back();
+    if (curQuestionIndex >= unitSize + mistakes.length - 1) {
+    }
     setCurQuestionIndex(curQuestionIndex + 1);
     console.log(curQuestionIndex, unitSize + mistakes.length - 1);
   };
@@ -48,9 +53,9 @@ export default function Unit({ unit, back }: { unit: UnitType; back: any }) {
   };
 
   return (
-    <View className="w-full flex-1 p-1 pt-16">
-      <View className="items-center">
-        <View className="m-4 h-4 w-full overflow-hidden rounded-full bg-gray-200">
+    <View className="w-full flex-1 bg-white p-1">
+      <View className="mt-16 items-center p-2">
+        <View className="m-4 h-4 w-full overflow-hidden rounded-full bg-gray-300">
           <View
             className="h-full bg-green-500"
             style={{

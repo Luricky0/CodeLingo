@@ -23,7 +23,7 @@ export default function MultipleChoiceSingleAnswer({
     setShowAnswer(true);
   };
   return (
-    <View className="flex-1 justify-between bg-white p-6">
+    <View className="flex-1 justify-between p-6">
       <Title>{question.title}</Title>
       <View className="flex-1 justify-center">
         <View className="mb-8 flex-row justify-center">

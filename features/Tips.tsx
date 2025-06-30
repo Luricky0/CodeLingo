@@ -5,7 +5,7 @@ import Title from '../components/Title';
 
 export default function TipsView({ tips, onNext }: { tips: Tips; onNext: any }) {
   return (
-    <View className="flex-1 justify-between bg-white p-6">
+    <View className="flex-1 justify-between p-6">
       <Title>{tips.title}</Title>
       <View className="flex">
         {tips.content.example.map((item, i) => (
