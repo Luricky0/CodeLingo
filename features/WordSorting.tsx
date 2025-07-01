@@ -16,16 +16,20 @@ export default function WordSorting({
   const [showAnswer, setShowAnswer] = useState(false);
   const [curAnswer, setCurAnswer] = useState<string[]>([]);
   const [errors, setErrors] = useState<boolean[]>([]);
-
+  const [hasError, setHasError] = useState(false);
   const onSubmit = () => {
     const ans = question.content.answer;
-    let hasError = false;
+    let hasErrorVar = false;
     const newErrors: boolean[] = curAnswer.map((cur, index) => {
       const correct = cur === ans[index];
-      hasError = correct && hasError;
+      hasErrorVar = !correct || hasErrorVar;
       return !correct;
     });
-    if (hasError) addMistake(question);
+    if (hasErrorVar || curAnswer.length !== question.content.answer.length) {
+      setHasError(true);
+      addMistake(question);
+      console.log('add', hasErrorVar);
+    }
     setErrors(newErrors);
     setShowAnswer(true);
   };
@@ -74,7 +78,8 @@ export default function WordSorting({
 
       <View className="w-full items-end items-center justify-center">
         {showAnswer ? (
-          <View className="h-16 w-full items-center justify-center rounded bg-green-300 p-1">
+          <View
+            className={`h-16 w-full items-center justify-center rounded ${hasError ? 'bg-red-300' : 'bg-green-300'} p-1`}>
             <View className="flex-row flex-wrap">
               {question.content.answer.map((item, index) => {
                 return (

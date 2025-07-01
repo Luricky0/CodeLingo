@@ -46,9 +46,9 @@ export default function Unit() {
         />
       );
     } else if (q.type === 'word-sorting') {
-      return <WordSorting question={q} onNext={nextQuestion} addMistake={addMistake} />;
+      return <WordSorting key={key} question={q} onNext={nextQuestion} addMistake={addMistake} />;
     } else if (q.type === 'tips') {
-      return <TipsView tips={q} onNext={nextQuestion} />;
+      return <TipsView key={key} tips={q} onNext={nextQuestion} />;
     }
   };
 
