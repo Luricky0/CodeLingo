@@ -148,6 +148,7 @@ const unit1: UnitType = {
     },
   ],
 };
+
 export const chapter: ChapterType = {
   id: ' cp1',
   title: 'Learn the data type',
