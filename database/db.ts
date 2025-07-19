@@ -5,8 +5,10 @@ const db = await SQLite.openDatabaseAsync('codelingo.db');
 await db.execAsync(`
     CREATE TABLE IF NOT EXISTS chapters (
       id TEXT PRIMARY KEY,
+      lang TEXT,
+      no TEXT,
       title TEXT,
-      unit TEXT
+      units TEXT
     );
   `);
 
