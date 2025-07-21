@@ -151,6 +151,8 @@ const unit1: UnitType = {
 
 export const chapter: ChapterType = {
   id: ' cp1',
+  lang: 'java',
+  no: 1,
   title: 'Learn the data type',
   units: [unit1],
 };

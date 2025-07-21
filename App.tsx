@@ -5,6 +5,7 @@ import Chapter from './features/Chapter';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { UnitType } from './types/Unit';
+import { initDB } from 'database/db';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -14,6 +15,7 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
+  initDB();
   return (
     <>
       <NavigationContainer>

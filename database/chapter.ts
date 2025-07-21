@@ -5,9 +5,13 @@ import db from './db';
 export const createChapter = async (ch: ChapterType) => {
   const { id, title, units, lang, no } = ch;
   await db.runAsync(
-  'INSERT INTO chapters (id, title, lang, no, units) VALUES (?, ?, ?, ?, ?)',
-  id, title, lang, no, JSON.stringify(units)
-);
+    'INSERT INTO chapters (id, title, lang, no, units) VALUES (?, ?, ?, ?, ?)',
+    id,
+    title,
+    lang,
+    no,
+    JSON.stringify(units)
+  );
 };
 
 export async function getChapter(lang: string, no: number): Promise<ChapterType | null> {
