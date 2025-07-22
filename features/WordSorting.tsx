@@ -1,7 +1,7 @@
 import Title from 'components/Title';
 import { WordSortingQuestion } from 'features/Question';
 import { ArrowRight, Check } from 'lucide-react-native';
-import { use, useState } from 'react';
+import { useState } from 'react';
 import { View, Text, Pressable, TouchableOpacity } from 'react-native';
 
 export default function WordSorting({
@@ -69,7 +69,9 @@ export default function WordSorting({
       <Title>{question.title}</Title>
 
       <View className="mx-2 w-full flex-1 items-center justify-center">
-        <View className="flex-1 items-center justify-center">{question.prompt}</View>
+        <View className="flex-1 items-center justify-center">
+          <Text>{question.prompt}</Text>
+        </View>
         <View className="flex-1">
           <View className="h-8 flex-row flex-wrap">{getAnswerView()}</View>
           <View className="m-1 h-px w-full bg-gray-300" />

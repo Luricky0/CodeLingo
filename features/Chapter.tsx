@@ -1,12 +1,26 @@
 import { View, Text } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Unit from './Unit';
 import { chapter } from 'assets/java/chapter1';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from 'App';
+import { getDB, initDB } from '../database/db';
+import { getChapter } from 'database/chapter';
 
 export default function Chapter() {
+  useEffect(() => {
+    const getChap = async () => {
+      try {
+        const db = await getDB();
+        const res = await getChapter(db, 'java', 1);
+        console.log(res);
+      } catch (err) {
+        console.error('查询：', err);
+      }
+    };
+    getChap();
+  }, []);
   type ChapterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Chapter'>;
   const navigation = useNavigation<ChapterScreenNavigationProp>();
   const getUnitButton = () => {
