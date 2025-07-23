@@ -1,6 +1,7 @@
 import { ChapterType } from 'types/Chapter';
 import { UnitType } from 'types/Unit';
 import { SQLiteDatabase } from 'expo-sqlite';
+import { getUnitByChapter } from './unit';
 
 export const createChapter = async (db: SQLiteDatabase, ch: ChapterType) => {
   const { id, title, units, lang, no } = ch;
@@ -25,26 +26,21 @@ export async function getChapter(
   const sql = `
     SELECT id, lang, no , title, units
     FROM chapters
-    WHERE lang = ? AND no = ?
+    WHERE id = "${lang}-${no}"
     LIMIT 1
   `;
-  const raw = await db.getFirstAsync<any>(sql, lang, no);
+  const raw = await db.getFirstAsync<any>(sql);
+  const units = await getUnitByChapter(db, lang, no);
   if (!raw) return null;
-
-  let units: UnitType[] = [];
-  try {
-    units = JSON.parse(raw.units);
-  } catch (e) {
-    console.error('Failed to parse units JSON:', e, raw.units);
-  }
+  if (!units) return null;
 
   const result: ChapterType = {
     id: raw.id,
     lang: raw.lang,
     no: Number(raw.no),
     title: raw.title,
-    description: raw.description,
     units,
+    description: raw.description,
     nextChapterId: raw.nextChapterId ?? undefined,
   };
 

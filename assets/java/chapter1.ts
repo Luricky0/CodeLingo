@@ -1,8 +1,10 @@
 import { ChapterType } from '../../types/Chapter';
 import { UnitType } from '../../types/Unit';
 
-const unit1: UnitType = {
-  id: 'unit-java-basics-1',
+export const unit1: UnitType = {
+  id: 'java-1-1',
+  chapterId: 'java-1',
+  order: 1,
   title: 'Java Basics',
   description: 'Learn fundamental Java syntax: variables, functions, control flow, and types.',
   nextUnitId: 'unit-java-basics-2',
@@ -150,9 +152,9 @@ const unit1: UnitType = {
 };
 
 export const chapter: ChapterType = {
-  id: ' cp1',
+  id: 'java-1',
   lang: 'java',
   no: 1,
+  units: [],
   title: 'Learn the data type',
-  units: [unit1],
 };

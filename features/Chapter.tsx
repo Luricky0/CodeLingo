@@ -14,7 +14,7 @@ export default function Chapter() {
       try {
         const db = await getDB();
         const res = await getChapter(db, 'java', 1);
-        console.log(res);
+        console.log('chapter', res);
       } catch (err) {
         console.error('查询：', err);
       }
