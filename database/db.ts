@@ -1,14 +1,18 @@
 import * as SQLite from 'expo-sqlite';
 import { createChapter, getChapter } from './chapter';
-import { chapter, unit1 } from 'assets/java/chapter1';
+import { chapter, unit1, unit2 } from 'assets/java/chapter1';
 import { createUnit } from './unit';
 
 let db: SQLite.SQLiteDatabase;
 
 export const initDB = async () => {
   if (!db) {
-    console.log('creating');
     db = await SQLite.openDatabaseAsync('codelingo.db');
+    await db.execAsync(`
+      CREATE TABLE users (
+      id INTEGER PRIMARY KEY,
+      name TEXT
+    );`);
     await db.runAsync('DROP TABLE IF EXISTS chapters;');
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS chapters (
@@ -29,8 +33,21 @@ export const initDB = async () => {
         \`order\` NUMBER
       );
     `);
+    await db.execAsync(`
+      CREATE TABLE user_unit_progress (
+      user_id INTEGER,
+      unit_id TEXT,
+      is_unlocked BOOLEAN DEFAULT 0,
+      is_completed BOOLEAN DEFAULT 0,
+      completed_at DATETIME,
+      PRIMARY KEY (user_id, unit_id),
+      FOREIGN KEY (user_id) REFERENCES users(id),
+      FOREIGN KEY (unit_id) REFERENCES units(id)
+    );`);
     await createUnit(db, unit1);
+    await createUnit(db, unit2);
     await createChapter(db, chapter);
+    console.log('DB created successfully');
   }
 };
 
