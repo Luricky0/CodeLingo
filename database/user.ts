@@ -1,4 +1,13 @@
 import { SQLiteDatabase } from 'expo-sqlite';
+import { UnitType } from 'features/Unit';
+
+export type UnitProgressType = {
+  user_id: string;
+  unit_id: string;
+  is_unlocked: boolean;
+  is_completed: boolean;
+  completed_at: Date;
+};
 
 export const completeCurrentUnit = async (
   db: SQLiteDatabase,
@@ -26,13 +35,14 @@ export const getNextUnitId = async (
   const unitNo = parseInt(match[3], 10);
 
   const nextUnitIdSameChapter = `${lang}-${chapterNo}-${unitNo + 1}`;
-  const unit1 = await db.getFirstAsync(`SELECT id FROM units WHERE id = ?`, [
+
+  const unit1 = await db.getFirstAsync<UnitType>(`SELECT id FROM units WHERE id = ?`, [
     nextUnitIdSameChapter,
   ]);
   if (unit1?.id) return unit1.id;
 
   const nextUnitIdNextChapter = `${lang}-${chapterNo + 1}-1`;
-  const unit2 = await db.getFirstAsync(`SELECT id FROM units WHERE id = ?`, [
+  const unit2 = await db.getFirstAsync<UnitType>(`SELECT id FROM units WHERE id = ?`, [
     nextUnitIdNextChapter,
   ]);
   if (unit2?.id) return unit2.id;
@@ -63,7 +73,11 @@ export const unlockNextUnit = async (
   console.log(`Unlocked next unit: ${nextUnitId}`);
   return nextUnitId;
 };
-export const getUnitProgress = async (db: SQLiteDatabase, lang: string, chapterno: string) => {
+export const getUnitProgress = async (
+  db: SQLiteDatabase,
+  lang: string,
+  chapterno: string
+): Promise<UnitProgressType[]> => {
   const chapterId = `${lang}-${chapterno}`;
   const rows = await db.getAllAsync(
     `
@@ -76,6 +90,5 @@ export const getUnitProgress = async (db: SQLiteDatabase, lang: string, chaptern
   `,
     [1, chapterId]
   );
-
-  return rows;
+  return rows as UnitProgressType[];
 };

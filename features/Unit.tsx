@@ -6,7 +6,9 @@ import MultipleChoiceSingleAnswer from './MultipleChoiceSingleAnswer';
 import FillInTheBlank from './FillInTheBlank';
 import TipsView from './Tips';
 import WordSorting from './WordSorting';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { getDB } from '../database/db';
+import { completeCurrentUnit, getNextUnitId, unlockNextUnit } from '../database/user';
 
 export default function Unit() {
   const route = useRoute();
@@ -14,13 +16,24 @@ export default function Unit() {
 
   const [curQuestionIndex, setCurQuestionIndex] = useState(0);
   const [mistakes, setMistakes] = useState<Question[]>([]);
+  const navigation = useNavigation();
   const unitSize = unit.questions.length;
-  const nextQuestion = () => {
-    if (curQuestionIndex >= unitSize + mistakes.length - 1) {
-    }
-    setCurQuestionIndex(curQuestionIndex + 1);
-    console.log(curQuestionIndex, unitSize + mistakes.length - 1);
+
+  const onComplete = async () => {
+    const db = await getDB();
+    await completeCurrentUnit(db, unit.id, 1);
+    await unlockNextUnit(db, unit.id);
+    navigation.goBack();
   };
+
+  const nextQuestion = async () => {
+    if (curQuestionIndex >= unitSize + mistakes.length - 1) {
+      onComplete();
+    } else {
+      setCurQuestionIndex(curQuestionIndex + 1);
+    }
+  };
+
   const addMistake = (question: Question) => {
     const newMistakes = [...mistakes, question];
     setMistakes(newMistakes);
