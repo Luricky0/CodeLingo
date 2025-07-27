@@ -81,6 +81,8 @@ export default function FillInTheBlank(prop: {
                     }`}
                     style={{ width: correctAnswer!.length * 8 + 16, textAlignVertical: 'center' }}
                     editable={!showAnswer}
+                    autoCorrect={false}
+                    autoCapitalize="none"
                     value={showAnswer && isError ? correctAnswer : inputVal}
                     onChangeText={(text) => onChangeInput(text, inputIndex)}
                   />
