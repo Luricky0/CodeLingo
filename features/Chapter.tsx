@@ -46,7 +46,7 @@ export default function Chapter() {
       return (
         <View key={item.id} className={`${baseStyle} ${bgColor}`}>
           <Text
-            className={`text-bold font-mono text-4xl ${textColor}`}
+            className={`text-bold font-menlo text-4xl ${textColor}`}
             onPress={() => {
               if (isUnlocked) {
                 navigation.navigate('Unit', { unit: item });
@@ -62,8 +62,8 @@ export default function Chapter() {
   return (
     <>
       <View className="flex-1 bg-blue-50">
-        <View className="h-40 w-full items-center justify-center">
-          <Text className=" font-mono text-2xl">{chapter?.title}</Text>
+        <View className="h-60 w-full items-center justify-center">
+          <Text className=" font-menlo text-2xl">{chapter?.title}</Text>
         </View>
         <View className="my-2 flex-1 items-center">{getUnitButton()}</View>
       </View>

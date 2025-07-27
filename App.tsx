@@ -4,6 +4,8 @@ import Chapter from './features/Chapter';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { UnitType } from './types/Unit';
+import { useEffect, useState } from 'react';
+import * as Font from 'expo-font';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -14,6 +16,14 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  useEffect(() => {
+    Font.loadAsync({
+      'menlo': require('./assets/fonts/Menlo-Regular.ttf'),
+      'menlo-bold': require('./assets/fonts/Menlo-Bold.ttf'),
+    }).then(() => setFontsLoaded(true));
+  }, []);
   return (
     <>
       <NavigationContainer>

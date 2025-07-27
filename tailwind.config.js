@@ -8,7 +8,13 @@ module.exports = {
 
   presets: [require('nativewind/preset')],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        menlo: ['menlo'],
+        mono: ['menlo'],
+        'menlo-bold': ['menlo-bold'],
+      },
+    },
   },
   plugins: [],
 }
