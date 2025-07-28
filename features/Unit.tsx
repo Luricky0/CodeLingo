@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { UnitType } from '../types/Unit';
 import { FillInTheBlankQuestion, MultipleChoiceQuestion, Question } from '../types/Question';
 import MultipleChoiceSingleAnswer from './MultipleChoiceSingleAnswer';
@@ -9,6 +9,7 @@ import WordSorting from './WordSorting';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getDB } from '../database/db';
 import { completeCurrentUnit, getNextUnitId, unlockNextUnit } from '../database/user';
+import { Cross, X } from 'lucide-react-native';
 
 export default function Unit() {
   const route = useRoute();
@@ -67,14 +68,21 @@ export default function Unit() {
 
   return (
     <View className="w-full flex-1 bg-white p-1">
-      <View className="mt-16 items-center p-2">
-        <View className="m-4 h-4 w-full overflow-hidden rounded-full bg-gray-300">
-          <View
-            className="h-full bg-green-500"
-            style={{
-              width: `${((curQuestionIndex + 1) / (unit.questions.length + mistakes.length)) * 100}%`,
-            }}
-          />
+      <View className="mt-16 w-full p-2">
+        <View className="h-8 flex-row items-center justify-between px-4">
+          <Pressable
+            className="h-8 flex-1 justify-center"
+            onPress={() => navigation.goBack()}>
+            <X size={36} color="black" />
+          </Pressable>
+          <View className="h-4 flex-[6] overflow-hidden rounded-full bg-gray-300">
+            <View
+              className="h-full bg-green-500"
+              style={{
+                width: `${((curQuestionIndex + 1) / (unit.questions.length + mistakes.length)) * 100}%`,
+              }}
+            />
+          </View>
         </View>
       </View>
       {getQuestionView()}
