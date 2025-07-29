@@ -60,24 +60,58 @@ export default function Chapter() {
     });
   };
 
+  const getChapterButton = () => {
+    if (!progressMap) return;
+    let i = 1;
+    let chapterProgress = [];
+    while (true) {
+      const unit_id = `java-${i}-1`;
+      if (progressMap[unit_id] == null) break;
+      chapterProgress.push(progressMap[unit_id]);
+      i++;
+    }
+    return chapterProgress.map((p, index) => {
+      const isUnlocked = p.is_unlocked;
+
+      const baseStyle = 'm-3 flex h-8 w-8 items-center justify-center rounded-full p-1';
+      const bgColor = isUnlocked ? 'bg-blue-400' : 'bg-gray-400';
+      const textColor = isUnlocked ? 'text-white' : 'text-gray-300';
+      return (
+        <View key={p.unit_id} className={`${baseStyle} ${bgColor}`}>
+          <Text className={`text-bold text-l font-menlo ${textColor}`}>{index + 1}</Text>
+        </View>
+      );
+    });
+  };
+
   return (
     <>
-      <View className="flex-1 bg-blue-50">
-        <View className="h-36 w-full flex-col-reverse items-center ">
-          <View className="w-96 flex-row justify-between rounded-2xl bg-blue-200 p-2">
-            <View>
-              <Text className=" text-l font-menlo">
-                {chapter?.lang.toLocaleUpperCase()} Chapter {chapter?.no}
-              </Text>
-              <Text className=" font-menlo text-2xl">{chapter?.title}</Text>
+      <View className="flex-1 flex-row bg-blue-50">
+        <View className="flex-1 items-center justify-center py-20 px-2">
+          <View className="rounded-xl bg-white h-full">
+            <View className="h-8 items-center justify-center">
+              <Text>Java</Text>
             </View>
-            <View className="items-center justify-center p-1 mx-1">
-              <Book size={38} className="white" />
-            </View>
+            {getChapterButton()}
           </View>
         </View>
+        <View>
+          <View className="flex-4 h-36 flex-col-reverse items-center ">
+            <View className="w-96 flex-row justify-between rounded-2xl bg-blue-200 p-2">
+              <View>
+                <Text className=" text-l font-menlo">
+                  {chapter?.lang.toLocaleUpperCase()} Chapter {chapter?.no}
+                </Text>
+                <Text className=" font-menlo text-2xl">{chapter?.title}</Text>
+              </View>
+              <View className="mx-1 items-center justify-center p-1">
+                <Book size={38} className="white" />
+              </View>
+            </View>
+          </View>
 
-        <View className="my-2 flex-1 items-center">{getUnitButton()}</View>
+          <View className="my-2 flex-1 items-center">{getUnitButton()}</View>
+        </View>
       </View>
     </>
   );
