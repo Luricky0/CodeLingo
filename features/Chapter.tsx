@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from 'App';
@@ -14,7 +14,9 @@ export default function Chapter() {
   const navigation = useNavigation<ChapterScreenNavigationProp>();
   const [chapter, setChapter] = useState<ChapterType>();
   const [progressMap, setProgressMap] = useState<Record<string, UnitProgressType>>({});
+  const [isShowChapterSelectionMenu, setIsShowChapterSelectionMenu] = useState(false);
   const isFocused = useIsFocused();
+
   async function start() {
     const db = await getDB();
     const res = await getChapter(db, 'java', 1);
@@ -87,16 +89,19 @@ export default function Chapter() {
   return (
     <>
       <View className="flex-1 flex-row bg-blue-50">
-        <View className="flex-1 items-center justify-center py-20 px-2">
-          <View className="rounded-xl bg-white h-full">
-            <View className="h-8 items-center justify-center">
-              <Text>Java</Text>
+        {isShowChapterSelectionMenu && (
+          <View className="flex-1 items-center justify-center px-2 py-20">
+            <View className="h-full rounded-xl bg-white">
+              <View className="h-8 items-center justify-center">
+                <Text>Java</Text>
+              </View>
+              {getChapterButton()}
             </View>
-            {getChapterButton()}
           </View>
-        </View>
-        <View>
-          <View className="flex-4 h-36 flex-col-reverse items-center ">
+        )}
+
+        <View className={`${isShowChapterSelectionMenu ? 'flex-4' : 'flex-1'}`}>
+          <View className={` h-36 flex-col-reverse items-center`}>
             <View className="w-96 flex-row justify-between rounded-2xl bg-blue-200 p-2">
               <View>
                 <Text className=" text-l font-menlo">
@@ -104,9 +109,11 @@ export default function Chapter() {
                 </Text>
                 <Text className=" font-menlo text-2xl">{chapter?.title}</Text>
               </View>
-              <View className="mx-1 items-center justify-center p-1">
+              <Pressable
+                className="mx-1 items-center justify-center p-1"
+                onPress={() => setIsShowChapterSelectionMenu(!isShowChapterSelectionMenu)}>
                 <Book size={38} className="white" />
-              </View>
+              </Pressable>
             </View>
           </View>
 
