@@ -2,11 +2,11 @@ import { View, Text, Pressable } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from 'App';
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import { ChapterType } from '../types/Chapter';
 import { getChapter } from 'database/chapter';
 import { getDB } from 'database/db';
-import { getUnitProgress, UnitProgressType } from 'database/user';
+import { getChapterProgress, getUnitProgress, UnitProgressType } from 'database/user';
 import { Book, Library, BookOpenCheck } from 'lucide-react-native';
 
 export default function Chapter() {
@@ -15,6 +15,7 @@ export default function Chapter() {
   const [chapter, setChapter] = useState<ChapterType>();
   const [progressMap, setProgressMap] = useState<Record<string, UnitProgressType>>({});
   const [isShowChapterSelectionMenu, setIsShowChapterSelectionMenu] = useState(false);
+  const [chapterSelectionView, setChapterSelectionView] = useState<JSX.Element[] | null>(null);
   const isFocused = useIsFocused();
 
   async function start() {
@@ -31,9 +32,14 @@ export default function Chapter() {
       setProgressMap(map);
     }
   }
+
   useEffect(() => {
     if (isFocused) start();
   }, [isFocused]);
+
+  useEffect(() => {
+    getChapterButton();
+  }, [isShowChapterSelectionMenu]);
 
   const getUnitButton = () => {
     if (!chapter) return null;
@@ -62,17 +68,11 @@ export default function Chapter() {
     });
   };
 
-  const getChapterButton = () => {
-    if (!progressMap) return;
-    let i = 1;
-    let chapterProgress = [];
-    while (true) {
-      const unit_id = `java-${i}-1`;
-      if (progressMap[unit_id] == null) break;
-      chapterProgress.push(progressMap[unit_id]);
-      i++;
-    }
-    return chapterProgress.map((p, index) => {
+  const getChapterButton = async () => {
+    const db = await getDB();
+    const chapterProgress = await getChapterProgress(db, 'java', 1);
+    console.log(chapterProgress);
+    const views = chapterProgress.map((p, index) => {
       const isUnlocked = p.is_unlocked;
 
       const baseStyle = 'm-3 flex h-8 w-8 items-center justify-center rounded-full p-1';
@@ -84,6 +84,7 @@ export default function Chapter() {
         </View>
       );
     });
+    setChapterSelectionView(views);
   };
 
   return (
@@ -95,7 +96,7 @@ export default function Chapter() {
               <View className="h-8 items-center justify-center">
                 <Text>Java</Text>
               </View>
-              {getChapterButton()}
+              {chapterSelectionView}
             </View>
           </View>
         )}

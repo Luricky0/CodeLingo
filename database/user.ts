@@ -73,6 +73,7 @@ export const unlockNextUnit = async (
   console.log(`Unlocked next unit: ${nextUnitId}`);
   return nextUnitId;
 };
+
 export const getUnitProgress = async (
   db: SQLiteDatabase,
   lang: string,
@@ -91,4 +92,43 @@ export const getUnitProgress = async (
     [1, chapterId]
   );
   return rows as UnitProgressType[];
+};
+
+export const getFirstUnitProgress = async (
+  db: SQLiteDatabase,
+  lang: string,
+  chapterno: string,
+  userId: number
+): Promise<UnitProgressType | null> => {
+  const chapterId = `${lang}-${chapterno}`;
+  const rows = await db.getFirstAsync(
+    `
+    SELECT u.id as unit_id, u.title, p.is_unlocked, p.is_completed, p.completed_at
+    FROM units u
+    LEFT JOIN user_unit_progress p
+      ON u.id = p.unit_id AND p.user_id = ?
+    WHERE u.chapterId = ? AND u."order" = 1
+  `,
+    [userId, chapterId]
+  );
+  if (!rows) return null;
+  return rows as UnitProgressType;
+};
+
+export const getChapterProgress = async (db: SQLiteDatabase, lang: string, userId: number) => {
+  const res = [];
+  let i = 1;
+  const MAX_CHAPTERS = 1000;
+  while (i <= MAX_CHAPTERS) {
+    try {
+      const p = await getFirstUnitProgress(db, lang, i + '', userId);
+      if (!p) break;
+      res.push(p);
+      i++;
+    } catch (e) {
+      console.error(`Error in chapter ${i}:`, e);
+      break;
+    }
+  }
+  return res;
 };
