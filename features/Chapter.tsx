@@ -18,29 +18,22 @@ export default function Chapter() {
   const [chapterSelectionView, setChapterSelectionView] = useState<JSX.Element[] | null>(null);
   const isFocused = useIsFocused();
   const [themeColor, setThemeColor] = useState('');
+  const [bgColor, setBgColor] = useState('');
+  const [titleBgColor, setTitleBgColor] = useState('');
 
   const setThemeColorByChapterNo = (no: number) => {
     const n = no % 6;
-    switch (n) {
-      case 0:
-        setThemeColor('bg-red');
-        break;
-      case 1:
-        setThemeColor('bg-blue');
-        break;
-      case 2:
-        setThemeColor('bg-green');
-        break;
-      case 3:
-        setThemeColor('bg-yellow');
-        break;
-      case 4:
-        setThemeColor('bg-orange');
-        break;
-      case 5:
-        setThemeColor('bg-purple');
-        break;
-    }
+    const bgColors = [
+      { bg: 'bg-red-100', title: 'bg-red-200', theme: 'bg-red-400' },
+      { bg: 'bg-blue-100', title: 'bg-blue-200', theme: 'bg-blue-400' },
+      { bg: 'bg-green-100', title: 'bg-green-200', theme: 'bg-green-400' },
+      { bg: 'bg-yellow-100', title: 'bg-yellow-200', theme: 'bg-yellow-400' },
+      { bg: 'bg-orange-100', title: 'bg-orange-200', theme: 'bg-orange-400' },
+      { bg: 'bg-purple-100', title: 'bg-purple-200', theme: 'bg-purple-400' },
+    ];
+    setBgColor(bgColors[n].bg);
+    setTitleBgColor(bgColors[n].title);
+    setThemeColor(bgColors[n].theme);
   };
 
   async function start() {
@@ -75,7 +68,7 @@ export default function Chapter() {
       const isUnlocked = unitProgress?.is_unlocked;
 
       const baseStyle = 'm-3 flex h-24 w-24 items-center justify-center rounded-full p-1';
-      const bgColor = isUnlocked ? 'bg-blue-400' : 'bg-gray-400';
+      const bgColor = isUnlocked ? themeColor : 'bg-gray-400';
       const textColor = isUnlocked ? 'text-white' : 'text-gray-300';
 
       return (
@@ -102,7 +95,7 @@ export default function Chapter() {
       const isUnlocked = p.is_unlocked;
 
       const baseStyle = 'm-3 flex h-8 w-8 items-center justify-center rounded-full p-1';
-      const bgColor = isUnlocked ? `${themeColor}-400` : 'bg-gray-400';
+      const bgColor = isUnlocked ? themeColor : 'bg-gray-400';
       const textColor = isUnlocked ? 'text-white' : 'text-gray-300';
       return (
         <View key={p.unit_id} className={`${baseStyle} ${bgColor}`}>
@@ -115,7 +108,7 @@ export default function Chapter() {
 
   return (
     <>
-      <View className={`flex-1 flex-row  ${themeColor}-50`}>
+      <View className={`flex-1 flex-row  ${bgColor}`}>
         {isShowChapterSelectionMenu && (
           <View className="flex-1 items-center justify-center px-2 py-20">
             <View className="h-full rounded-xl bg-white">
@@ -129,7 +122,7 @@ export default function Chapter() {
 
         <View className={`${isShowChapterSelectionMenu ? 'flex-4' : 'flex-1'}`}>
           <View className={` h-36 flex-col-reverse items-center`}>
-            <View className={`w-96 flex-row justify-between rounded-2xl ${themeColor}-200 p-2`}>
+            <View className={`w-96 flex-row justify-between rounded-2xl ${titleBgColor} p-2`}>
               <View>
                 <Text className=" text-l font-menlo">
                   {chapter?.lang.toLocaleUpperCase()} Chapter {chapter?.no}
