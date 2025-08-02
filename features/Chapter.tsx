@@ -12,6 +12,8 @@ import { Book, Library, BookOpenCheck } from 'lucide-react-native';
 export default function Chapter() {
   type ChapterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Chapter'>;
   const navigation = useNavigation<ChapterScreenNavigationProp>();
+  const [lang, setLang] = useState('java');
+  const [chapterNo, setChapterNo] = useState(1);
   const [chapter, setChapter] = useState<ChapterType>();
   const [progressMap, setProgressMap] = useState<Record<string, UnitProgressType>>({});
   const [isShowChapterSelectionMenu, setIsShowChapterSelectionMenu] = useState(false);
@@ -39,8 +41,8 @@ export default function Chapter() {
   async function start() {
     setThemeColorByChapterNo(1);
     const db = await getDB();
-    const res = await getChapter(db, 'java', 1);
-    const progress = await getUnitProgress(db, 'java', '1');
+    const res = await getChapter(db, lang, chapterNo);
+    const progress = await getUnitProgress(db, lang, chapterNo + '');
 
     if (res) setChapter(res);
     const map: Record<string, UnitProgressType> = {};
@@ -53,8 +55,10 @@ export default function Chapter() {
   }
 
   useEffect(() => {
-    if (isFocused) start();
-  }, [isFocused]);
+    if (isFocused) {
+      start();
+    }
+  }, [isFocused, chapterNo, lang]);
 
   useEffect(() => {
     getChapterButton();
@@ -98,9 +102,12 @@ export default function Chapter() {
       const bgColor = isUnlocked ? themeColor : 'bg-gray-400';
       const textColor = isUnlocked ? 'text-white' : 'text-gray-300';
       return (
-        <View key={p.unit_id} className={`${baseStyle} ${bgColor}`}>
+        <Pressable
+          key={p.unit_id}
+          className={`${baseStyle} ${bgColor}`}
+          onPress={() => setChapterNo(index + 1)}>
           <Text className={`text-bold text-l font-menlo ${textColor}`}>{index + 1}</Text>
-        </View>
+        </Pressable>
       );
     });
     setChapterSelectionView(views);
@@ -112,8 +119,8 @@ export default function Chapter() {
         {isShowChapterSelectionMenu && (
           <View className="flex-1 items-center justify-center px-2 py-20">
             <View className="h-full rounded-xl bg-white">
-              <View className="h-8 items-center justify-center">
-                <Text>Java</Text>
+              <View className={`h-8 items-center justify-center rounded-xl ${titleBgColor} m-1`}>
+                <Text>{lang.toLocaleUpperCase()}</Text>
               </View>
               {chapterSelectionView}
             </View>
