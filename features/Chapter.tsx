@@ -17,6 +17,7 @@ export default function Chapter() {
   const [chapter, setChapter] = useState<ChapterType>();
   const [progressMap, setProgressMap] = useState<Record<string, UnitProgressType>>({});
   const [isShowChapterSelectionMenu, setIsShowChapterSelectionMenu] = useState(false);
+  const [isShowLangSelectionMenu, setIsShowLangSelectionMenu] = useState(false);
   const [chapterSelectionView, setChapterSelectionView] = useState<JSX.Element[] | null>(null);
   const isFocused = useIsFocused();
   const [themeColor, setThemeColor] = useState('');
@@ -39,7 +40,7 @@ export default function Chapter() {
   };
 
   async function start() {
-    setThemeColorByChapterNo(1);
+    setThemeColorByChapterNo(chapterNo);
     const db = await getDB();
     const res = await getChapter(db, lang, chapterNo);
     const progress = await getUnitProgress(db, lang, chapterNo + '');
@@ -101,11 +102,13 @@ export default function Chapter() {
       const baseStyle = 'm-3 flex h-8 w-8 items-center justify-center rounded-full p-1';
       const bgColor = isUnlocked ? themeColor : 'bg-gray-400';
       const textColor = isUnlocked ? 'text-white' : 'text-gray-300';
+
       return (
         <Pressable
           key={p.unit_id}
           className={`${baseStyle} ${bgColor}`}
-          onPress={() => setChapterNo(index + 1)}>
+          onPress={() => setChapterNo(index + 1)}
+          disabled={!isUnlocked}>
           <Text className={`text-bold text-l font-menlo ${textColor}`}>{index + 1}</Text>
         </Pressable>
       );
@@ -113,40 +116,66 @@ export default function Chapter() {
     setChapterSelectionView(views);
   };
 
+  const langs = ['java', 'python', 'c'];
+
+  const getLangSelectionView = () => {
+    return (
+      <View>
+        {langs.map((l) => {
+          if (l !== lang) {
+            return (
+              <Pressable
+                key={l}
+                className={`${titleBgColor} m-1 mt-2 h-8 items-center justify-center rounded-xl bg-gray-200 p-1`}
+                onPress={() => {
+                  setLang(l);
+                  setChapterNo(1);
+                  setIsShowLangSelectionMenu(false);
+                }}>
+                <Text>{l.toLocaleUpperCase()}</Text>
+              </Pressable>
+            );
+          }
+        })}
+      </View>
+    );
+  };
+
   return (
-    <>
-      <View className={`flex-1 flex-row  ${bgColor}`}>
+    <View className={`flex-1 pt-20 ${bgColor}`}>
+      <View className={`flex-1 flex-row justify-evenly pb-10 `}>
         {isShowChapterSelectionMenu && (
-          <View className="flex-1 items-center justify-center px-2 py-20">
+          <View className="w-100 flex-[1] items-center justify-center">
             <View className="h-full rounded-xl bg-white">
-              <View className={`h-8 items-center justify-center rounded-xl ${titleBgColor} m-1`}>
+              <Pressable
+                className={`h-8 items-center justify-center rounded-xl ${titleBgColor} m-1`}
+                onPress={() => setIsShowLangSelectionMenu(!isShowLangSelectionMenu)}>
                 <Text>{lang.toLocaleUpperCase()}</Text>
-              </View>
-              {chapterSelectionView}
+              </Pressable>
+              {isShowLangSelectionMenu ? getLangSelectionView() : <View className='items-center'>{chapterSelectionView}</View>}
             </View>
           </View>
         )}
 
-        <View className={`${isShowChapterSelectionMenu ? 'flex-4' : 'flex-1'}`}>
-          <View className={` h-36 flex-col-reverse items-center`}>
-            <View className={`w-96 flex-row justify-between rounded-2xl ${titleBgColor} p-2`}>
-              <View>
-                <Text className=" text-l font-menlo">
-                  {chapter?.lang.toLocaleUpperCase()} Chapter {chapter?.no}
-                </Text>
-                <Text className=" font-menlo text-2xl">{chapter?.title}</Text>
-              </View>
-              <Pressable
-                className="mx-1 items-center justify-center p-1"
-                onPress={() => setIsShowChapterSelectionMenu(!isShowChapterSelectionMenu)}>
-                <Book size={38} className="white" />
-              </Pressable>
+        <View className={`${isShowChapterSelectionMenu ? 'flex-[4]' : 'flex-1'} px-1`}>
+          <View
+            className={`h-20 w-full flex-row items-center justify-between rounded-2xl ${titleBgColor} p-2`}>
+            <View>
+              <Text className=" text-l font-menlo">
+                {chapter?.lang.toLocaleUpperCase()} Chapter {chapter?.no}
+              </Text>
+              <Text className=" font-menlo text-2xl">{chapter?.title}</Text>
             </View>
+            <Pressable
+              className="mx-1 items-center justify-center p-1"
+              onPress={() => setIsShowChapterSelectionMenu(!isShowChapterSelectionMenu)}>
+              <Book size={38} className="white" />
+            </Pressable>
           </View>
 
           <View className="my-2 flex-1 items-center">{getUnitButton()}</View>
         </View>
       </View>
-    </>
+    </View>
   );
 }
