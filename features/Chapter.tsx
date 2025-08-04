@@ -43,7 +43,7 @@ export default function Chapter() {
     setThemeColorByChapterNo(chapterNo);
     const db = await getDB();
     const res = await getChapter(db, lang, chapterNo);
-    const progress = await getUnitProgress(db, lang, chapterNo + '');
+    const progress = await getUnitProgress(db, lang, chapterNo);
 
     if (res) setChapter(res);
     const map: Record<string, UnitProgressType> = {};

@@ -458,3 +458,11 @@ export const chapter: ChapterType = {
   units: [],
   title: 'Learn the data type',
 };
+
+export const chapter2: ChapterType = {
+  id: 'java-2',
+  lang: 'java',
+  no: 2,
+  units: [],
+  title: 'Learn the data type',
+};

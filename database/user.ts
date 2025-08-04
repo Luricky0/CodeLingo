@@ -77,7 +77,7 @@ export const unlockNextUnit = async (
 export const getUnitProgress = async (
   db: SQLiteDatabase,
   lang: string,
-  chapterno: string
+  chapterno: number
 ): Promise<UnitProgressType[]> => {
   const chapterId = `${lang}-${chapterno}`;
   const rows = await db.getAllAsync(

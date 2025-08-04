@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import { createChapter, getChapter } from './chapter';
-import { chapter, unit1, unit2, unit201 } from 'assets/java/chapter1';
+import { chapter, chapter2, unit1, unit2, unit201 } from 'assets/java/chapter1';
 import { createUnit } from './unit';
 import { completeCurrentUnit } from './user';
 
@@ -56,6 +56,7 @@ const initDB = async (): Promise<SQLite.SQLiteDatabase> => {
   await createUnit(dbInstance, unit2);
   await createUnit(dbInstance, unit201);
   await createChapter(dbInstance, chapter);
+   await createChapter(dbInstance, chapter2);
   await completeCurrentUnit(dbInstance, 'java-1-1');
 
   console.log('DB initialized successfully');
