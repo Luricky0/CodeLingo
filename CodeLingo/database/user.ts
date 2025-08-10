@@ -9,6 +9,48 @@ export type UnitProgressType = {
   completed_at: Date;
 };
 
+export type UserType = {
+  id: number;
+  username?: string;
+  email: string;
+  token: string;
+};
+
+export const createUser = async (
+  db: SQLiteDatabase,
+  userId: number,
+  email: string,
+  username: string,
+  token: string
+): Promise<void> => {
+  try {
+    await db.runAsync(`INSERT INTO users (userId, email, username, token) VALUES (?, ?, ?, ?)`, [
+      userId,
+      email,
+      username,
+      token,
+    ]);
+    console.log('User created successfully');
+  } catch (error) {
+    console.error('Failed to create user:', error);
+    throw error;
+  }
+};
+
+export const getToken = async (db: SQLiteDatabase): Promise<string | null> => {
+  try {
+    const res = await db.getFirstAsync<UserType>(
+      `SELECT token FROM users WHERE id = ? LIMIT 1`,
+      [1]
+    );
+   if(res) return res.token
+   else return null
+  } catch (error) {
+    console.error('Failed to get token:', error);
+    return null;
+  }
+};
+
 export const completeCurrentUnit = async (
   db: SQLiteDatabase,
   currentUnitId: string,

@@ -10,10 +10,13 @@ let initPromise: Promise<SQLite.SQLiteDatabase> | null = null;
 const initDB = async (): Promise<SQLite.SQLiteDatabase> => {
   const dbInstance = await SQLite.openDatabaseAsync('codelingo.db');
 
+  await dbInstance.runAsync('DROP TABLE IF EXISTS users;');
   await dbInstance.execAsync(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY,
-      name TEXT
+      username TEXT,
+      email TEXT NOT NULL UNIQUE,
+      token TEXT NOT NULL
     );
   `);
 
