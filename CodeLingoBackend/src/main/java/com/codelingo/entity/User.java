@@ -8,8 +8,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(unique = true,nullable = false)
+    private String email;
+
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)
@@ -37,5 +39,12 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
