@@ -2,7 +2,9 @@ package com.codelingo.service;
 
 import com.codelingo.entity.User;
 import com.codelingo.repository.UserRepository;
+import com.codelingo.util.JwtUtil;
 import com.codelingo.util.PasswordUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -14,14 +16,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public boolean registerUser(String email,String username, String password) {
-        if(userRepository.findUserByEmail(email) != null) {
+    @Transactional
+    public boolean registerUser(String email,String password) {
+        if(userRepository.findUserByEmail(email).isPresent()) {
             return false;
         }
         String passwordHashed = PasswordUtil.encodePassword(password);
         User user = new User();
         user.setEmail(email);
-        user.setUsername(username);
+        user.setUsername(email);
         user.setPasswordHash(passwordHashed);
         try {
             userRepository.save(user);
@@ -31,13 +34,16 @@ public class UserService {
         return true;
     }
 
-    public boolean loginUser(String email, String password) {
+    public String loginUser(String email, String password) {
         Optional<User> user = userRepository.findUserByEmail(email);
         if(user.isPresent()) {
             boolean matches = PasswordUtil.matches(password, user.get().getPasswordHash());
-            return matches;
+            if(matches){
+                return JwtUtil.generateToken(email);
+            }
+            return null;
         }else{
-            return false;
+            return null;
         }
     }
 }

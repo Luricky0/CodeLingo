@@ -18,19 +18,30 @@ export type UserType = {
 
 export const createUser = async (
   db: SQLiteDatabase,
-  userId: number,
+  id: number,
   email: string,
-  username: string,
-  token: string
+  token: string,
+  username = ''
 ): Promise<void> => {
   try {
-    await db.runAsync(`INSERT INTO users (userId, email, username, token) VALUES (?, ?, ?, ?)`, [
-      userId,
-      email,
-      username,
-      token,
-    ]);
-    console.log('User created successfully');
+    const user = await db.getFirstAsync(`SELECT * FROM users WHERE id = ?`, [1]);
+    if (user) {
+      await db.runAsync(`UPDATE users SET email = ?, username = ?, token = ? WHERE id = ?`, [
+        email,
+        username,
+        token,
+        id,
+      ]);
+      console.log('User updated successfully');
+    } else {
+      await db.runAsync(`INSERT INTO users (id, email, username, token) VALUES (?, ?, ?, ?)`, [
+        id,
+        email,
+        username,
+        token,
+      ]);
+      console.log('User created successfully');
+    }
   } catch (error) {
     console.error('Failed to create user:', error);
     throw error;
@@ -39,12 +50,11 @@ export const createUser = async (
 
 export const getToken = async (db: SQLiteDatabase): Promise<string | null> => {
   try {
-    const res = await db.getFirstAsync<UserType>(
-      `SELECT token FROM users WHERE id = ? LIMIT 1`,
-      [1]
-    );
-   if(res) return res.token
-   else return null
+    const res = await db.getFirstAsync<UserType>(`SELECT token FROM users WHERE id = ? LIMIT 1`, [
+      1,
+    ]);
+    if (res) return res.token;
+    else return null;
   } catch (error) {
     console.error('Failed to get token:', error);
     return null;
