@@ -10,7 +10,6 @@ let initPromise: Promise<SQLite.SQLiteDatabase> | null = null;
 const initDB = async (): Promise<SQLite.SQLiteDatabase> => {
   const dbInstance = await SQLite.openDatabaseAsync('codelingo.db');
 
-  await dbInstance.runAsync('DROP TABLE IF EXISTS users;');
   await dbInstance.execAsync(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY,
@@ -59,7 +58,7 @@ const initDB = async (): Promise<SQLite.SQLiteDatabase> => {
   await createUnit(dbInstance, unit2);
   await createUnit(dbInstance, unit201);
   await createChapter(dbInstance, chapter);
-   await createChapter(dbInstance, chapter2);
+  await createChapter(dbInstance, chapter2);
   await completeCurrentUnit(dbInstance, 'java-1-1');
 
   console.log('DB initialized successfully');
