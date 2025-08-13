@@ -1,5 +1,6 @@
 package com.codelingo.controller;
 
+import com.codelingo.dto.AuthResponse;
 import com.codelingo.entity.User;
 import com.codelingo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,9 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody Map<String, String> payload) {
         String email = payload.get("email");
         String password = payload.get("password");
-        String token = userService.loginUser(email,password);
-        if(token != null) {
-            return ResponseEntity.ok(token);
+        AuthResponse response = userService.loginUser(email,password);
+        if(response != null) {
+            return ResponseEntity.ok(response);
         }else{
             return ResponseEntity.status(404).body("Invalid email or password");
         }

@@ -24,7 +24,7 @@ export const createUser = async (
   username = ''
 ): Promise<void> => {
   try {
-    const user = await db.getFirstAsync(`SELECT * FROM users WHERE id = ?`, [1]);
+    const user = await db.getFirstAsync(`SELECT * FROM users WHERE id = ?`, [id]);
     if (user) {
       await db.runAsync(`UPDATE users SET email = ?, username = ?, token = ? WHERE id = ?`, [
         email,
@@ -64,15 +64,16 @@ export const getToken = async (db: SQLiteDatabase): Promise<string | null> => {
 export const completeCurrentUnit = async (
   db: SQLiteDatabase,
   currentUnitId: string,
-  userId: number = 1
+  userId: string
 ): Promise<void> => {
+  const userIdNum = Number.parseInt(userId);
   await db.runAsync(
     `
     INSERT OR REPLACE INTO user_unit_progress
     (user_id, unit_id, is_unlocked, is_completed, completed_at)
     VALUES (?, ?, 1, 1, CURRENT_TIMESTAMP)
   `,
-    [userId, currentUnitId]
+    [userIdNum, currentUnitId]
   );
 };
 export const getNextUnitId = async (
@@ -105,8 +106,9 @@ export const getNextUnitId = async (
 export const unlockNextUnit = async (
   db: SQLiteDatabase,
   currentUnitId: string,
-  userId: number = 1
+  userId: string
 ): Promise<string | null> => {
+  const userIdNum = Number.parseInt(userId);
   const nextUnitId = await getNextUnitId(db, currentUnitId);
   if (!nextUnitId) {
     console.log('No next unit to unlock.');
@@ -119,10 +121,9 @@ export const unlockNextUnit = async (
     (user_id, unit_id, is_unlocked, is_completed)
     VALUES (?, ?, 1, 0)
   `,
-    [userId, nextUnitId]
+    [userIdNum, nextUnitId]
   );
 
-  console.log(`Unlocked next unit: ${nextUnitId}`);
   return nextUnitId;
 };
 

@@ -1,19 +1,29 @@
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { login, register } from 'api/account';
+import { RootStackParamList } from 'App';
 import { getDB } from 'database/db';
 import { createUser } from 'database/user';
 import { useState } from 'react';
 import { Pressable, TextInput, View, Text } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigator = useNavigation<LoginScreenNavigationProp>();
+
   const onLogin = async () => {
     if (email !== '' && password !== 'null') {
-      const token = await login(email, password);
-      if (token) {
+      const res = await login(email, password);
+      if (res) {
+        navigator.navigate('Chapter');
         const db = await getDB();
-        await createUser(db, 1, email, token);
+        await createUser(db, res.userId, email, res.token);
+        await AsyncStorage.setItem('codelingo-token', res.token);
+        await AsyncStorage.setItem('codelingo-user', res.userId);
       }
     }
   };
@@ -22,8 +32,7 @@ const Login = () => {
     if (email !== '' && password !== 'null') {
       const token = await register(email, password);
       if (token) {
-        const db = await getDB();
-        await createUser(db, 1, email, token);
+        console.log('register sucessfully');
       }
     }
   };

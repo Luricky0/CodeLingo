@@ -1,5 +1,6 @@
 package com.codelingo.service;
 
+import com.codelingo.dto.AuthResponse;
 import com.codelingo.entity.User;
 import com.codelingo.repository.UserRepository;
 import com.codelingo.util.JwtUtil;
@@ -34,12 +35,13 @@ public class UserService {
         return true;
     }
 
-    public String loginUser(String email, String password) {
+    public AuthResponse loginUser(String email, String password) {
         Optional<User> user = userRepository.findUserByEmail(email);
         if(user.isPresent()) {
             boolean matches = PasswordUtil.matches(password, user.get().getPasswordHash());
             if(matches){
-                return JwtUtil.generateToken(email);
+                String token = JwtUtil.generateToken(user.get().getId());
+                return new AuthResponse(token, user.get().getId().toString());
             }
             return null;
         }else{

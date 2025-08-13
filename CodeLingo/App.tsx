@@ -44,12 +44,15 @@ export default function App() {
       <NavigationContainer>
         {hasToken ? (
           <Stack.Navigator initialRouteName="Chapter" screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Chapter" component={Chapter} />
             <Stack.Screen name="Unit" component={Unit} />
           </Stack.Navigator>
         ) : (
           <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Chapter" component={Chapter} />
+            <Stack.Screen name="Unit" component={Unit} />
           </Stack.Navigator>
         )}
       </NavigationContainer>

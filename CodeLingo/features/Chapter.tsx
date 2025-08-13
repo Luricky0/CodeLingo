@@ -152,7 +152,18 @@ export default function Chapter() {
                 onPress={() => setIsShowLangSelectionMenu(!isShowLangSelectionMenu)}>
                 <Text>{lang.toLocaleUpperCase()}</Text>
               </Pressable>
-              {isShowLangSelectionMenu ? getLangSelectionView() : <View className='items-center'>{chapterSelectionView}</View>}
+              {isShowLangSelectionMenu ? (
+                getLangSelectionView()
+              ) : (
+                <View className="items-center">
+                  {chapterSelectionView}
+                  <Pressable
+                    className="rounded-xl bg-white"
+                    onPress={() => navigation.navigate('Login')}>
+                    <Text>Exit</Text>
+                  </Pressable>
+                </View>
+              )}
             </View>
           </View>
         )}

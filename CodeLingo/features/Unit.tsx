@@ -10,6 +10,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { getDB } from '../database/db';
 import { completeCurrentUnit, getNextUnitId, unlockNextUnit } from '../database/user';
 import { Cross, X } from 'lucide-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Unit() {
   const route = useRoute();
@@ -22,8 +23,14 @@ export default function Unit() {
 
   const onComplete = async () => {
     const db = await getDB();
-    await completeCurrentUnit(db, unit.id, 1);
-    await unlockNextUnit(db, unit.id);
+    const currentUserId = await AsyncStorage.getItem('codelingo-user');
+    if (currentUserId) {
+      await completeCurrentUnit(db, unit.id, currentUserId);
+      await unlockNextUnit(db, unit.id, currentUserId);
+    } else {
+      console.log('Fail to unlock next unit: No current userid founded!');
+    }
+
     navigation.goBack();
   };
 
@@ -70,9 +77,7 @@ export default function Unit() {
     <View className="w-full flex-1 bg-white p-1">
       <View className="mt-16 w-full p-2">
         <View className="h-8 flex-row items-center justify-between px-4">
-          <Pressable
-            className="h-8 flex-1 justify-center"
-            onPress={() => navigation.goBack()}>
+          <Pressable className="h-8 flex-1 justify-center" onPress={() => navigation.goBack()}>
             <X size={36} color="black" />
           </Pressable>
           <View className="h-4 flex-[6] overflow-hidden rounded-full bg-gray-300">
