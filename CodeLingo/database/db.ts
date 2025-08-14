@@ -10,7 +10,7 @@ let initPromise: Promise<SQLite.SQLiteDatabase> | null = null;
 
 const initDB = async (): Promise<SQLite.SQLiteDatabase> => {
   const dbInstance = await SQLite.openDatabaseAsync('codelingo.db');
-
+  await dbInstance.runAsync('DROP TABLE IF EXISTS users');
   await dbInstance.execAsync(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY,
@@ -41,6 +41,7 @@ const initDB = async (): Promise<SQLite.SQLiteDatabase> => {
       \`order\` NUMBER
     );
   `);
+  
   await dbInstance.runAsync('DROP TABLE IF EXISTS user_unit_progress;');
   await dbInstance.execAsync(`
     CREATE TABLE IF NOT EXISTS user_unit_progress (
@@ -60,9 +61,9 @@ const initDB = async (): Promise<SQLite.SQLiteDatabase> => {
   await createUnit(dbInstance, unit201);
   await createChapter(dbInstance, chapter);
   await createChapter(dbInstance, chapter2);
-  const currentUserId = await AsyncStorage.getItem('codelingo-user')
-  if(currentUserId)await completeCurrentUnit(dbInstance, 'java-1-1',currentUserId);
-  else console.log('No currentUser found!')
+  const currentUserId = await AsyncStorage.getItem('codelingo-user');
+  if (currentUserId) await completeCurrentUnit(dbInstance, 'java-1-1', currentUserId);
+  else console.log('No currentUser found!');
 
   console.log('DB initialized successfully');
   return dbInstance;

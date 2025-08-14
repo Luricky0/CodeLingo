@@ -19,11 +19,11 @@ const Login = () => {
     if (email !== '' && password !== 'null') {
       const res = await login(email, password);
       if (res) {
-        navigator.navigate('Chapter');
         const db = await getDB();
-        await createUser(db, res.userId, email, res.token);
         await AsyncStorage.setItem('codelingo-token', res.token);
         await AsyncStorage.setItem('codelingo-user', res.userId);
+        await createUser(db, res.userId, email, res.token);
+        navigator.navigate('Chapter');
       }
     }
   };

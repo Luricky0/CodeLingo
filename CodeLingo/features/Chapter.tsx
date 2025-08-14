@@ -8,6 +8,7 @@ import { getChapter } from 'database/chapter';
 import { getDB } from 'database/db';
 import { getChapterProgress, getUnitProgress, UnitProgressType } from 'database/user';
 import { Book, Library, BookOpenCheck } from 'lucide-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Chapter() {
   type ChapterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Chapter'>;
@@ -43,8 +44,8 @@ export default function Chapter() {
     setThemeColorByChapterNo(chapterNo);
     const db = await getDB();
     const res = await getChapter(db, lang, chapterNo);
-    const progress = await getUnitProgress(db, lang, chapterNo);
-
+    const currentUserId = await AsyncStorage.getItem('codelingo-user');
+    const progress = await getUnitProgress(db, lang, chapterNo, currentUserId!);
     if (res) setChapter(res);
     const map: Record<string, UnitProgressType> = {};
     if (progress) {
@@ -94,8 +95,8 @@ export default function Chapter() {
 
   const getChapterButton = async () => {
     const db = await getDB();
-    const chapterProgress = await getChapterProgress(db, 'java', 1);
-    console.log(chapterProgress);
+    const currentUserId = await AsyncStorage.getItem('codelingo-user');
+    const chapterProgress = await getChapterProgress(db, 'java', currentUserId!);
     const views = chapterProgress.map((p, index) => {
       const isUnlocked = p.is_unlocked;
 

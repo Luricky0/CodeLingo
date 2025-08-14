@@ -20,6 +20,7 @@ apiClient.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.log('Axios:', error);
     return Promise.reject(error);
   }
 );
