@@ -1,13 +1,6 @@
+import { uploadProgress } from '../api/progressApi';
 import { SQLiteDatabase } from 'expo-sqlite';
-import { UnitType } from 'features/Unit';
-
-export type UnitProgressType = {
-  user_id: string;
-  unit_id: string;
-  is_unlocked: boolean;
-  is_completed: boolean;
-  completed_at: Date;
-};
+import { UnitProgressType, UnitType } from '../types/Unit';
 
 export type UserType = {
   id: number;
@@ -40,7 +33,7 @@ export const createUser = async (
         username,
         token,
       ]);
-      await completeCurrentUnit(db, 'java-1-1', id + '');
+      await unlockNextUnit(db, 'java-1-0', id + '');
       console.log('User created successfully');
     }
   } catch (error) {
@@ -128,6 +121,16 @@ export const unlockNextUnit = async (
   return nextUnitId;
 };
 
+const formatUnitProgress = (progresses: any): UnitProgressType[] => {
+  return progresses.map((p: any) => ({
+    userId: p.user_id,
+    unitId: p.unit_id,
+    isUnlocked: !!p.is_unlocked,
+    isCompleted: !!p.is_completed,
+    completedAt: p.completed_at,
+  }));
+};
+
 export const getUnitProgress = async (
   db: SQLiteDatabase,
   lang: string,
@@ -147,7 +150,7 @@ export const getUnitProgress = async (
   `,
     [userIdNum, chapterId]
   );
-  return rows as UnitProgressType[];
+  return formatUnitProgress(rows);
 };
 
 export const getFirstUnitProgress = async (
@@ -158,9 +161,10 @@ export const getFirstUnitProgress = async (
 ): Promise<UnitProgressType | null> => {
   const userIdNum = Number.parseInt(userId);
   const chapterId = `${lang}-${chapterno}`;
-  const rows = await db.getFirstAsync(
+  const rows = await db.getFirstAsync<UnitProgressType>(
     `
-    SELECT u.id as unit_id, u.title, p.is_unlocked, p.is_completed, p.completed_at
+    SELECT u.id as unitId, u.title, p.user_id as userId, p.is_unlocked as isUnlocked,
+    p.is_completed as isCompleted, p.completed_at as completedAt
     FROM units u
     LEFT JOIN user_unit_progress p
       ON u.id = p.unit_id AND p.user_id = ?
@@ -169,7 +173,19 @@ export const getFirstUnitProgress = async (
     [userIdNum, chapterId]
   );
   if (!rows) return null;
-  return rows as UnitProgressType;
+  return rows;
+};
+
+export const getAllProgressByUserId = async (db: SQLiteDatabase, userId: string) => {
+  const userIdNum = Number.parseInt(userId);
+  const rows = await db.getAllAsync(
+    `SELECT * FROM user_unit_progress p
+    WHERE p.user_id = ?
+    `,
+    [userIdNum]
+  );
+  if (!rows) return null;
+  return formatUnitProgress(rows);
 };
 
 export const getChapterProgress = async (db: SQLiteDatabase, lang: string, userId: string) => {

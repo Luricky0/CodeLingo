@@ -1,5 +1,6 @@
 package com.codelingo.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class Progress {
     private Boolean isCompleted = false;
 
     @Column(name = "completed_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime completedAt;
 
     public Progress() {}
@@ -31,6 +33,14 @@ public class Progress {
     public Progress(Long userId, String unitId) {
         this.userId = userId;
         this.unitId = unitId;
+    }
+
+    public void setValue(Progress progress) {
+        this.userId = progress.getUserId();
+        this.unitId = progress.getUnitId();
+        this.isUnlocked = progress.getUnlocked();
+        this.isCompleted = progress.getCompleted();
+        this.completedAt = progress.getCompletedAt();
     }
 
     public Long getUserId() {

@@ -9,3 +9,11 @@ export type UnitType = {
   questions: Question[];
   nextUnitId?: string;
 };
+
+export type UnitProgressType = {
+  userId: string;
+  unitId: string;
+  isUnlocked: boolean;
+  isCompleted: boolean;
+  completedAt: Date;
+};

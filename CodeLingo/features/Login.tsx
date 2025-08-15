@@ -3,10 +3,11 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { login, register } from 'api/account';
 import { RootStackParamList } from 'App';
 import { getDB } from 'database/db';
-import { createUser } from 'database/user';
+import { createUser, getAllProgressByUserId } from 'database/user';
 import { useState } from 'react';
 import { Pressable, TextInput, View, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { uploadProgress } from 'api/progressApi';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 const Login = () => {
@@ -23,6 +24,9 @@ const Login = () => {
         await AsyncStorage.setItem('codelingo-token', res.token);
         await AsyncStorage.setItem('codelingo-user', res.userId);
         await createUser(db, res.userId, email, res.token);
+        const ps = await getAllProgressByUserId(db, res.userId);
+        console.log('ps', ps);
+        if (ps != null) await uploadProgress(ps);
         navigator.navigate('Chapter');
       }
     }

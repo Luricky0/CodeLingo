@@ -1,6 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { getDB } from 'database/db';
-import { getToken } from 'database/user';
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:8080',
@@ -12,11 +11,11 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   async (config) => {
-    const db = await getDB();
-    const token = await getToken(db);
-    if (token) {
-      config.headers.Authorization = token;
-    }
+    const token = await AsyncStorage.getItem('codelingo-token');
+
+    config.headers.Authorization = `Bearer ${token}`;
+
+    console.log('Axios request:', config.url, config.headers);
     return config;
   },
   (error) => {

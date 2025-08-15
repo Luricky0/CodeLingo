@@ -17,6 +17,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public Long getUserIdByToken(String token) {
+        return JwtUtil.parseToken(token);
+    }
+
     @Transactional
     public boolean registerUser(String email,String password) {
         if(userRepository.findUserByEmail(email).isPresent()) {

@@ -69,6 +69,7 @@ const initDB = async (): Promise<SQLite.SQLiteDatabase> => {
   return dbInstance;
 };
 
+
 export const getDB = async (): Promise<SQLite.SQLiteDatabase> => {
   if (db) return db;
 

@@ -6,9 +6,10 @@ import { JSX, useEffect, useState } from 'react';
 import { ChapterType } from '../types/Chapter';
 import { getChapter } from 'database/chapter';
 import { getDB } from 'database/db';
-import { getChapterProgress, getUnitProgress, UnitProgressType } from 'database/user';
+import { getChapterProgress, getUnitProgress} from 'database/user';
 import { Book, Library, BookOpenCheck } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UnitProgressType } from '../types/Unit';
 
 export default function Chapter() {
   type ChapterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Chapter'>;
@@ -50,7 +51,7 @@ export default function Chapter() {
     const map: Record<string, UnitProgressType> = {};
     if (progress) {
       for (const p of progress) {
-        map[p.unit_id] = p;
+        map[p.unitId] = p;
       }
       setProgressMap(map);
     }
@@ -71,7 +72,7 @@ export default function Chapter() {
 
     return chapter.units.map((item, index) => {
       const unitProgress = progressMap[item.id];
-      const isUnlocked = unitProgress?.is_unlocked;
+      const isUnlocked = unitProgress?.isUnlocked;
 
       const baseStyle = 'm-3 flex h-24 w-24 items-center justify-center rounded-full p-1';
       const bgColor = isUnlocked ? themeColor : 'bg-gray-400';
@@ -98,7 +99,7 @@ export default function Chapter() {
     const currentUserId = await AsyncStorage.getItem('codelingo-user');
     const chapterProgress = await getChapterProgress(db, 'java', currentUserId!);
     const views = chapterProgress.map((p, index) => {
-      const isUnlocked = p.is_unlocked;
+      const isUnlocked = p.isUnlocked;
 
       const baseStyle = 'm-3 flex h-8 w-8 items-center justify-center rounded-full p-1';
       const bgColor = isUnlocked ? themeColor : 'bg-gray-400';
@@ -106,7 +107,7 @@ export default function Chapter() {
 
       return (
         <Pressable
-          key={p.unit_id}
+          key={p.unitId}
           className={`${baseStyle} ${bgColor}`}
           onPress={() => setChapterNo(index + 1)}
           disabled={!isUnlocked}>
