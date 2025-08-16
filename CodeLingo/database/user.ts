@@ -205,3 +205,27 @@ export const getChapterProgress = async (db: SQLiteDatabase, lang: string, userI
   }
   return res;
 };
+
+export const syncProgress = async (
+  db: SQLiteDatabase,
+  shouldUpdate: UnitProgressType[],
+  userId: string
+) => {
+  const userIdNum = Number.parseInt(userId);
+  await Promise.all(
+    shouldUpdate.map(async (p) => {
+      await db.runAsync(
+        `UPDATE user_unit_progress
+          SET is_unlocked = ?, is_completed = ?, completed_at = ?
+          WHERE user_id = ? AND unit_id = ?`,
+        [
+          p.isUnlocked ? 1 : 0,
+          p.isCompleted ? 1 : 0,
+          p.completedAt.toISOString(),
+          userIdNum,
+          p.unitId,
+        ]
+      );
+    })
+  );
+};

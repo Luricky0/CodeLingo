@@ -25,8 +25,8 @@ public class ProgressController {
             token = token.substring(7);
         }
         Long userId = userService.getUserIdByToken(token);
-        progressService.uploadProgressByUser(userId,progresses);
+        List<Progress> shouldUpdateLocal = progressService.uploadProgressByUser(userId,progresses);
 
-        return ResponseEntity.ok("Upload successful");
+        return ResponseEntity.ok(shouldUpdateLocal);
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "progress")
@@ -24,11 +25,14 @@ public class Progress {
     @Column(name = "is_completed", nullable = false)
     private Boolean isCompleted = false;
 
-    @Column(name = "completed_at")
+    @Column(name = "completed_at", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime completedAt;
 
-    public Progress() {}
+    public Progress() {
+
+    }
+
 
     public Progress(Long userId, String unitId) {
         this.userId = userId;
@@ -42,6 +46,7 @@ public class Progress {
         this.isCompleted = progress.getCompleted();
         this.completedAt = progress.getCompletedAt();
     }
+
 
     public Long getUserId() {
         return userId;

@@ -3,7 +3,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { login, register } from 'api/account';
 import { RootStackParamList } from 'App';
 import { getDB } from 'database/db';
-import { createUser, getAllProgressByUserId } from 'database/user';
+import { createUser, getAllProgressByUserId, syncProgress } from 'database/user';
 import { useState } from 'react';
 import { Pressable, TextInput, View, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,7 +26,8 @@ const Login = () => {
         await createUser(db, res.userId, email, res.token);
         const ps = await getAllProgressByUserId(db, res.userId);
         console.log('ps', ps);
-        if (ps != null) await uploadProgress(ps);
+        const shouldUpdate = await uploadProgress(ps!);
+        await syncProgress(db, shouldUpdate, res.userId);
         navigator.navigate('Chapter');
       }
     }
