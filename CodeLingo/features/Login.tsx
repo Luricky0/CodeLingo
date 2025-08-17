@@ -25,7 +25,6 @@ const Login = () => {
         await AsyncStorage.setItem('codelingo-user', res.userId);
         await createUser(db, res.userId, email, res.token);
         const ps = await getAllProgressByUserId(db, res.userId);
-        console.log('ps', ps);
         const shouldUpdate = await uploadProgress(ps!);
         await syncProgress(db, shouldUpdate, res.userId);
         navigator.navigate('Chapter');

@@ -12,10 +12,7 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   async (config) => {
     const token = await AsyncStorage.getItem('codelingo-token');
-
     config.headers.Authorization = `Bearer ${token}`;
-
-    console.log('Axios request:', config.url, config.headers);
     return config;
   },
   (error) => {
