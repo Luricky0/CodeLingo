@@ -1,7 +1,6 @@
 import { ChapterType } from 'types/Chapter';
 import { UnitType } from 'types/Unit';
 import { SQLiteDatabase } from 'expo-sqlite';
-import { Question } from 'types/Question';
 
 export const createUnit = async (db: SQLiteDatabase, u: UnitType) => {
   const { id, title, questions, chapterId, order } = u;
@@ -14,6 +13,11 @@ export const createUnit = async (db: SQLiteDatabase, u: UnitType) => {
       JSON.stringify(questions),
       chapterId,
       order
+    );
+  } else {
+    await db.runAsync(
+      `UPDATE units SET title = ?, questions = ?, chapterId = ?, \`order\` = ? WHERE id = ?`,
+      [title, JSON.stringify(questions), chapterId, order, id]
     );
   }
 };
@@ -41,3 +45,35 @@ export async function getUnitByChapter(
 
   return units;
 }
+
+export const getAllUnits = async (db: SQLiteDatabase) => {
+  try {
+    const rows = await db.getAllAsync(`SELECT * FROM units`);
+    return rows;
+  } catch (error) {
+    console.error('Failed to fetch units:', error);
+    return [];
+  }
+};
+
+const deleteUnit = async (db: SQLiteDatabase, id: string) => {
+  await db.runAsync(`DELETE FROM units WHERE id = ?`, [id]);
+};
+
+export const syncUnits = async (db: SQLiteDatabase, latest: UnitType[]) => {
+  const latestSet = new Set(latest.map((u) => (u as UnitType).id));
+  const cur = await getAllUnits(db);
+  await Promise.all(
+    cur.map(async (cu) => {
+      const curUnitId = (cu as UnitType).id;
+      if (!latestSet.has(curUnitId)) {
+        await deleteUnit(db, curUnitId);
+      }
+    })
+  );
+  await Promise.all(
+    latest.map(async (u) => {
+      await createUnit(db, u);
+    })
+  );
+};
