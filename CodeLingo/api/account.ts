@@ -7,7 +7,7 @@ export const login = async (email: string, password: string) => {
     if (res.status === 200) return res.data;
     else return null;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 
@@ -18,6 +18,6 @@ export const register = async (email: string, password: string) => {
     if (res.status === 200) return res.data;
     else return null;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
