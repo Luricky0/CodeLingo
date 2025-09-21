@@ -252,6 +252,47 @@ export const unit2: UnitType = {
   ],
 };
 
+export const unit3: UnitType = {
+  id: 'java-1-3',
+  chapterId: 'java-1',
+  order: 3,
+  title: 'Java Basics',
+  description: 'Learn for and while loop',
+  questions: [
+    {
+      id: 't0',
+      title: 'tips0',
+      type: 'tips',
+      content: {
+        example: [
+          [
+            { type: 'point', word: 'for' },
+            { type: 'word', word: '( int i = 0; i<10 ; i++ )' },
+            { type: 'word', word: '{ x += 1; }' },
+          ],
+          [
+            { type: 'word', word: 'for' },
+            { type: 'point', word: '( int i = 0; ' },
+            { type: 'word', word: 'i<10 ; i++ )' },
+            { type: 'word', word: '{ x += 1; }' },
+          ],
+           [
+            { type: 'word', word: 'for' },
+            { type: 'point', word: '( int i = 0; ' },
+            { type: 'word', word: 'i<10 ; i++ )' },
+            { type: 'word', word: '{ x += 1; }' },
+          ],
+        ],
+        explanation: [
+          `It represents a for loop that increases i from 0 to 9, 
+          adding 1 to x in each iteration.`,
+          `Declare i with an initial value of 0`,
+        ],
+      },
+    },
+  ],
+};
+
 export const unit201: UnitType = {
   id: 'java-2-1',
   chapterId: 'java-2',
