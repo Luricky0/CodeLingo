@@ -500,6 +500,126 @@ export const unit4: UnitType = {
   ],
 };
 
+export const unitMainFunction: UnitType = {
+  id: 'java-1-main',
+  chapterId: 'java-1',
+  order: 5,
+  title: 'Main Function',
+  description: 'Learn the structure of the main function in Java and how to run a Java program.',
+  nextUnitId: 'unit-java-basics-5',
+  questions: [
+    {
+      id: 't0',
+      type: 'tips',
+      title: 'Basic structure of main function',
+      content: {
+        example: [
+          [
+            { type: 'word', word: 'public' },
+            { type: 'word', word: 'class' },
+            { type: 'word', word: 'HelloWorld' },
+            { type: 'point', word: '{' },
+            { type: 'word', word: 'public' },
+            { type: 'word', word: 'static' },
+            { type: 'word', word: 'void' },
+            { type: 'word', word: 'main' },
+            { type: 'point', word: '(' },
+            { type: 'word', word: 'String[] args' },
+            { type: 'point', word: ')' },
+            { type: 'point', word: '{' },
+            { type: 'word', word: 'System.out.println("Hello World");' },
+            { type: 'point', word: '}' },
+            { type: 'point', word: '}' },
+          ],
+        ],
+        explanation: [
+          'The main function is the entry point of a Java program. It must be public, static, and void, and accept a String array as parameter. The program prints "Hello World" when run.',
+        ],
+      },
+    },
+    {
+      id: 'q1',
+      type: 'multiple-choice',
+      title: 'Purpose of main function',
+      content: {
+        questionText: 'What is the role of the main function in a Java program?',
+        options: [
+          'It defines a class',
+          'It is the starting point of the program',
+          'It declares variables',
+          'It handles exceptions',
+        ],
+        correctAnswer: 'It is the starting point of the program',
+      },
+      fullAnswer: 'The main function is executed when the program starts, making it the entry point of the Java application.',
+    },
+    {
+      id: 't1',
+      type: 'tips',
+      title: 'Modifiers of main function',
+      content: {
+        example: [
+          [
+            { type: 'word', word: 'public' },
+            { type: 'word', word: 'static' },
+            { type: 'word', word: 'void' },
+            { type: 'word', word: 'main' },
+            { type: 'point', word: '(' },
+            { type: 'word', word: 'String[] args' },
+            { type: 'point', word: ')' },
+          ],
+        ],
+        explanation: [
+          'public: accessible from outside the class; static: can be called without creating an object; void: does not return a value; main: function name; String[] args: array to accept command-line arguments.',
+        ],
+      },
+    },
+    {
+      id: 'ws1',
+      type: 'fill-in-the-blank',
+      title: 'Write a main function',
+      prompt: 'Fill in the blanks to create a main function that prints "Hello World".',
+      content: [
+        { type: 'word', word: 'public' },
+        { type: 'word', word: 'class' },
+        { type: 'blank', answer: 'HelloWorld' },
+        { type: 'word', word: '{' },
+        { type: 'word', word: 'public' },
+        { type: 'word', word: 'static' },
+        { type: 'word', word: 'void' },
+        { type: 'blank', answer: 'main' },
+        { type: 'word', word: '(' },
+        { type: 'blank', answer: 'String[] args' },
+        { type: 'word', word: ')' },
+        { type: 'word', word: '{' },
+        { type: 'blank', answer: 'System.out.println("Hello World");' },
+        { type: 'word', word: '}' },
+        { type: 'word', word: '}' },
+      ],
+    },
+    {
+      id: 'ws2',
+      type: 'word-sorting',
+      title: 'Construct the main function',
+      prompt: 'Put the words in order to create a valid main function.',
+      content: {
+        options: [
+          'public', 'class', 'HelloWorld', '{',
+          'public', 'static', 'void', 'main', '(',
+          'String[] args', ')', '{',
+          'System.out.println("Hello World");', '}', '}'
+        ],
+        answer: [
+          'public', 'class', 'HelloWorld', '{',
+          'public', 'static', 'void', 'main', '(',
+          'String[] args', ')', '{',
+          'System.out.println("Hello World");', '}', '}'
+        ],
+      },
+    },
+  ],
+};
+
 export const chapter: ChapterType = {
   id: 'java-1',
   lang: 'java',
